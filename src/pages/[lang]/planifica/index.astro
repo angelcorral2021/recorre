@@ -1,0 +1,127 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { useTranslations } from '../../../i18n/ui';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'es' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang as 'es' | 'en');
+
+const pageTitle = lang === 'es' ? 'Planifica' : 'Plan';
+const description = lang === 'es' 
+  ? 'Todo lo que necesitas saber para organizar tu viaje perfecto.' 
+  : 'Everything you need to know to organize your perfect trip.';
+
+const subcategories = [
+  { id: 'como-llegar', title: lang === 'es' ? 'Cómo llegar' : 'How to get there', icon: '✈️' },
+  { id: 'donde-alojar', title: lang === 'es' ? 'Dónde alojar' : 'Where to stay', icon: '🏨' },
+  { id: 'itinerarios', title: lang === 'es' ? 'Itinerarios' : 'Itineraries', icon: '🗺️' },
+  { id: 'consejos', title: lang === 'es' ? 'Consejos prácticos' : 'Practical tips', icon: '💡' },
+];
+---
+
+<Layout title={`${pageTitle} | RecorreChile`} lang={lang as 'es' | 'en'}>
+	<div class="page-header">
+		<div class="container">
+			<h1>{pageTitle}</h1>
+			<p>{description}</p>
+		</div>
+	</div>
+
+	<section class="content-section">
+		<div class="container">
+			<div class="cards-grid">
+				{subcategories.map(sub => (
+					<a href={`/${lang}/planifica/${sub.id}`} class="section-card">
+						<div class="icon">{sub.icon}</div>
+						<h2>{sub.title}</h2>
+						<span class="view-more">{lang === 'es' ? 'Planificar ➔' : 'Plan ➔'}</span>
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.page-header {
+		background: linear-gradient(135deg, var(--color-secondary), #0369A1);
+		color: white;
+		padding: 6rem 1.5rem 4rem;
+		text-align: center;
+	}
+	
+	.page-header h1 {
+		font-size: clamp(2.5rem, 5vw, 4rem);
+		font-weight: 700;
+		margin-bottom: 1rem;
+	}
+	
+	.page-header p {
+		font-size: 1.25rem;
+		opacity: 0.9;
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.container {
+		max-width: 1280px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+
+	.content-section {
+		padding: 5rem 0;
+	}
+
+	.cards-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 2rem;
+	}
+
+	.section-card {
+		background: var(--surface-color);
+		border-radius: 20px;
+		padding: 2.5rem;
+		text-align: center;
+		text-decoration: none;
+		color: var(--text-primary);
+		box-shadow: var(--shadow-md);
+		border: 1px solid var(--border-color);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.section-card:hover {
+		transform: translateY(-8px);
+		box-shadow: var(--shadow-lg);
+		border-color: var(--color-secondary);
+	}
+
+	.icon {
+		font-size: 3.5rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.section-card h2 {
+		font-size: 1.5rem;
+		font-weight: 600;
+	}
+
+	.view-more {
+		color: var(--color-secondary);
+		font-weight: 600;
+		font-size: 0.9rem;
+		margin-top: auto;
+		padding-top: 1rem;
+	}
+</style>

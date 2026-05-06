@@ -1,0 +1,250 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { useTranslations } from '../../i18n/ui';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'es' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang as 'es' | 'en');
+
+const pageTitle = lang === 'es' ? 'Descubre Chile' : 'Discover Chile';
+const subtitle = lang === 'es' 
+  ? 'Encuentra destinos increíbles, planifica tu viaje y vive experiencias inolvidables en el fin del mundo.' 
+  : 'Find incredible destinations, plan your trip and live unforgettable experiences at the end of the world.';
+
+const categories = [
+  { id: 'arte-cultura', title: lang === 'es' ? 'Arte y Cultura' : 'Art & Culture', img: 'https://images.unsplash.com/photo-1582293041079-7814c2f12063?auto=format&fit=crop&q=80&w=800' },
+  { id: 'gastronomia', title: lang === 'es' ? 'Gastronomía' : 'Gastronomy', img: 'https://images.unsplash.com/photo-1544025162-811114b0b18d?auto=format&fit=crop&q=80&w=800' },
+  { id: 'naturaleza-aventura', title: lang === 'es' ? 'Naturaleza y Aventura' : 'Nature & Adventure', img: 'https://images.unsplash.com/photo-1490782300182-697b80ad4293?auto=format&fit=crop&q=80&w=800' },
+  { id: 'ocio-vida-nocturna', title: lang === 'es' ? 'Ocio y Vida Nocturna' : 'Leisure & Nightlife', img: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=800' },
+];
+---
+
+<Layout title={pageTitle} lang={lang as 'es' | 'en'}>
+	<div class="hero">
+		<div class="hero-content">
+			<h1>{pageTitle}</h1>
+			<p>{subtitle}</p>
+			<div class="hero-actions">
+				<a href={`/${lang}/descubre`} class="btn btn-primary">Empezar a Explorar</a>
+				<a href={`/${lang}/planifica/itinerarios`} class="btn btn-secondary">Ver Itinerarios</a>
+			</div>
+		</div>
+	</div>
+
+	<section class="categories-section">
+		<div class="section-header">
+			<h2>{t('nav.descubre')}</h2>
+			<p>Explora por categorías y encuentra lo que más te apasiona.</p>
+		</div>
+		
+		<div class="grid-container">
+			{categories.map((cat, index) => {
+				const isLarge = index === 0 || index === 3;
+				
+				return (
+					<a href={`/${lang}/descubre/${cat.id}`} class={`card ${isLarge ? 'card-large' : ''}`}>
+						<img 
+							src={cat.img} 
+							alt={cat.title}
+							class="card-img"
+							loading="lazy"
+						/>
+						<div class="card-overlay">
+							<h2>{cat.title}</h2>
+						</div>
+					</a>
+				);
+			})}
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.hero {
+		min-height: 80vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 4rem 1.5rem;
+		text-align: center;
+		background: linear-gradient(135deg, #FFF1F2 0%, #F0F9FF 100%);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.hero::before {
+		content: '';
+		position: absolute;
+		top: -50%;
+		left: -50%;
+		width: 200%;
+		height: 200%;
+		background: radial-gradient(circle, rgba(225,29,72,0.05) 0%, transparent 60%);
+		z-index: 0;
+	}
+	
+	.hero-content {
+		position: relative;
+		z-index: 1;
+		max-width: 800px;
+	}
+
+	.hero h1 {
+		font-size: clamp(3rem, 8vw, 5rem);
+		letter-spacing: -0.04em;
+		line-height: 1.1;
+		margin-bottom: 1.5rem;
+		background: linear-gradient(to right, var(--text-primary), var(--color-primary));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	
+	.hero p {
+		font-size: clamp(1.125rem, 3vw, 1.5rem);
+		color: var(--text-secondary);
+		margin-bottom: 2.5rem;
+		line-height: 1.5;
+	}
+
+	.hero-actions {
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.btn {
+		padding: 1rem 2rem;
+		border-radius: 999px;
+		font-weight: 600;
+		font-size: 1.125rem;
+		text-decoration: none;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.btn-primary {
+		background-color: var(--color-primary);
+		color: white;
+		box-shadow: 0 4px 14px 0 rgba(225, 29, 72, 0.39);
+	}
+
+	.btn-primary:hover {
+		background-color: var(--color-primary-hover);
+		transform: translateY(-2px);
+		box-shadow: 0 6px 20px rgba(225, 29, 72, 0.23);
+	}
+
+	.btn-secondary {
+		background-color: white;
+		color: var(--text-primary);
+		border: 1px solid var(--border-color);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.btn-secondary:hover {
+		border-color: var(--text-secondary);
+		transform: translateY(-2px);
+	}
+
+	.categories-section {
+		padding: 5rem 1.5rem;
+		max-width: 1280px;
+		margin: 0 auto;
+	}
+
+	.section-header {
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+
+	.section-header h2 {
+		font-size: 2.5rem;
+		font-weight: 700;
+		margin-bottom: 0.5rem;
+	}
+
+	.section-header p {
+		color: var(--text-secondary);
+		font-size: 1.125rem;
+	}
+
+	.grid-container {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+	}
+
+	.card {
+		position: relative;
+		border-radius: 24px;
+		overflow: hidden;
+		display: block;
+		text-decoration: none;
+		aspect-ratio: 4/3;
+		transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.card:hover {
+		transform: translateY(-8px);
+		box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+	}
+
+	.card-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.card:hover .card-img {
+		transform: scale(1.05);
+	}
+
+	.card-overlay {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 3rem 2rem 2rem;
+		background: linear-gradient(to top, rgba(15,23,42,0.9), transparent);
+		color: white;
+		transition: padding 0.3s ease;
+	}
+
+	.card:hover .card-overlay {
+		padding-bottom: 2.5rem;
+	}
+
+	.card-overlay h2 {
+		font-size: 1.75rem;
+		font-weight: 600;
+		line-height: 1.2;
+		margin: 0;
+	}
+
+	@media (min-width: 768px) {
+		.grid-container {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		
+		.card {
+			aspect-ratio: 1;
+		}
+
+		.card-large {
+			grid-column: span 2;
+			aspect-ratio: 2/1;
+		}
+		
+		.card-large .card-overlay h2 {
+			font-size: 2.5rem;
+		}
+	}
+</style>

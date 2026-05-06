@@ -1,0 +1,380 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/ui';
+
+interface Props {
+	title: string;
+	lang?: 'es' | 'en';
+}
+
+const url = new URL(Astro.request.url);
+const lang = Astro.props.lang || getLangFromUrl(url);
+const t = useTranslations(lang);
+const { title } = Astro.props;
+
+const alternateLang = lang === 'es' ? 'en' : 'es';
+const alternatePath = Astro.url.pathname.replace(`/${lang}`, `/${alternateLang}`);
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} | RecorreChile</title>
+		<meta name="description" content="Descubre, planifica y vive experiencias únicas en Chile." />
+		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		
+		{/* Tracking & Analytics Simulation */}
+		<script>
+			// Simulated Google Analytics / Tag Manager
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){window.dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'G-XXXXXXXXXX', {
+				'page_path': window.location.pathname
+			});
+			
+			// Event Tracking
+			document.addEventListener('click', (e) => {
+				const target = e.target;
+				if (target && typeof target.closest === 'function' && (target.closest('a') || target.closest('button'))) {
+					const el = target.closest('a') || target.closest('button');
+					if (el) {
+						gtag('event', 'click', {
+							'event_category': 'interaction',
+							'event_label': el.textContent ? el.textContent.trim() : 'button_click'
+						});
+					}
+				}
+			});
+		</script>
+	</head>
+	<body>
+		{/* Top Navigation */}
+		<header class="top-nav">
+			<div class="nav-container">
+				<a href={`/${lang}/`} class="logo">Recorre<span>Chile</span></a>
+				
+				<nav class="desktop-menu">
+					<div class="nav-item has-dropdown">
+						<a href={`/${lang}/descubre`} class="nav-link">{t('nav.descubre')}</a>
+						<div class="dropdown-menu">
+							<a href={`/${lang}/descubre/arte-cultura`}>Arte y Cultura</a>
+							<a href={`/${lang}/descubre/gastronomia`}>Gastronomía</a>
+							<a href={`/${lang}/descubre/naturaleza-aventura`}>Naturaleza y Aventura</a>
+							<a href={`/${lang}/descubre/ocio-vida-nocturna`}>Ocio y Vida Nocturna</a>
+						</div>
+					</div>
+					<div class="nav-item has-dropdown">
+						<a href={`/${lang}/planifica`} class="nav-link">{t('nav.planifica')}</a>
+						<div class="dropdown-menu">
+							<a href={`/${lang}/planifica/como-llegar`}>Cómo llegar</a>
+							<a href={`/${lang}/planifica/donde-alojar`}>Dónde alojar</a>
+							<a href={`/${lang}/planifica/itinerarios`}>Itinerarios</a>
+							<a href={`/${lang}/planifica/consejos`}>Consejos prácticos</a>
+						</div>
+					</div>
+					<div class="nav-item has-dropdown">
+						<a href={`/${lang}/inspiracion`} class="nav-link">{t('nav.inspiracion')}</a>
+						<div class="dropdown-menu">
+							<a href={`/${lang}/inspiracion/guias`}>Guías</a>
+							<a href={`/${lang}/inspiracion/experiencias`}>Experiencias</a>
+							<a href={`/${lang}/inspiracion/historias`}>Historias</a>
+						</div>
+					</div>
+					<div class="nav-item has-dropdown">
+						<a href={`/${lang}/ayuda`} class="nav-link">{t('nav.ayuda')}</a>
+						<div class="dropdown-menu">
+							<a href={`/${lang}/ayuda/info-util`}>Información útil</a>
+							<a href={`/${lang}/ayuda/seguridad`}>Seguridad</a>
+							<a href={`/${lang}/ayuda/faqs`}>FAQs</a>
+						</div>
+					</div>
+				</nav>
+
+				<div class="nav-actions">
+					{/* Currency Selector */}
+					<div class="currency-selector">
+						<select id="currency-select" aria-label={t('currency.select')}>
+							<option value="CLP">CLP ($)</option>
+							<option value="USD">USD ($)</option>
+							<option value="EUR">EUR (€)</option>
+						</select>
+					</div>
+
+					{/* Language Toggle */}
+					<a href={alternatePath} class="lang-toggle">{alternateLang.toUpperCase()}</a>
+				</div>
+			</div>
+		</header>
+
+		<main>
+			<slot />
+		</main>
+
+		{/* Bottom Navigation for Mobile */}
+		<nav class="bottom-nav">
+			<a href={`/${lang}/`} class="bottom-nav-item">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+				<span>{t('nav.home')}</span>
+			</a>
+			<a href={`/${lang}/descubre`} class="bottom-nav-item">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+				<span>{t('nav.search')}</span>
+			</a>
+			<a href={`/${lang}/planifica`} class="bottom-nav-item">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+				<span>{t('nav.saved')}</span>
+			</a>
+		</nav>
+
+		<script>
+			// Currency persistence
+			const currencySelect = document.getElementById('currency-select');
+			if (currencySelect) {
+				const savedCurrency = localStorage.getItem('preferred_currency') || 'CLP';
+				currencySelect.value = savedCurrency;
+
+				currencySelect.addEventListener('change', (e) => {
+					const target = e.target;
+					if (target) {
+						localStorage.setItem('preferred_currency', target.value);
+						// Dispatch custom event for reactive components
+						window.dispatchEvent(new CustomEvent('currency-changed', { detail: target.value }));
+					}
+				});
+			}
+		</script>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--bg-color: #F8FAFC;
+		--surface-color: #FFFFFF;
+		--text-primary: #0F172A;
+		--text-secondary: #64748B;
+		
+		--color-primary: #E11D48; /* Chile Red */
+		--color-primary-hover: #BE123C;
+		--color-secondary: #0284C7; /* Ocean Blue */
+		--color-accent: #10B981; /* Nature Green */
+		
+		--border-color: #E2E8F0;
+		--shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+		--shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+		--shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+	}
+
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	html, body {
+		font-family: 'Outfit', sans-serif;
+		background-color: var(--bg-color);
+		color: var(--text-primary);
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
+
+	main {
+		flex: 1;
+		padding-bottom: 70px;
+		padding-top: 70px;
+	}
+
+	/* Top Navigation */
+	.top-nav {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 70px;
+		background: rgba(255, 255, 255, 0.85);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border-bottom: 1px solid var(--border-color);
+		z-index: 100;
+		box-shadow: var(--shadow-sm);
+	}
+
+	.nav-container {
+		max-width: 1280px;
+		margin: 0 auto;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 1.5rem;
+	}
+
+	.logo {
+		font-weight: 700;
+		font-size: 1.5rem;
+		color: var(--text-primary);
+		text-decoration: none;
+		letter-spacing: -0.02em;
+	}
+
+	.logo span {
+		color: var(--color-primary);
+	}
+
+	.nav-actions {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.desktop-menu {
+		display: none;
+	}
+
+	.nav-item {
+		position: relative;
+	}
+
+	.nav-link {
+		text-decoration: none;
+		color: var(--text-secondary);
+		font-weight: 500;
+		padding: 0.5rem 0.75rem;
+		border-radius: 8px;
+		transition: all 0.2s ease;
+	}
+
+	.nav-link:hover {
+		color: var(--color-primary);
+		background-color: rgba(225, 29, 72, 0.05);
+	}
+
+	.dropdown-menu {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		margin-top: 0.5rem;
+		background: var(--surface-color);
+		border-radius: 12px;
+		box-shadow: var(--shadow-lg);
+		border: 1px solid var(--border-color);
+		padding: 0.5rem;
+		min-width: 200px;
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(10px);
+		transition: all 0.2s ease;
+	}
+
+	.nav-item:hover .dropdown-menu {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+	}
+
+	.dropdown-menu a {
+		display: block;
+		padding: 0.5rem 1rem;
+		color: var(--text-secondary);
+		text-decoration: none;
+		font-size: 0.9rem;
+		border-radius: 6px;
+		transition: all 0.2s ease;
+	}
+
+	.dropdown-menu a:hover {
+		background: rgba(225, 29, 72, 0.05);
+		color: var(--color-primary);
+	}
+
+	.currency-selector select {
+		appearance: none;
+		background: transparent;
+		border: 1px solid var(--border-color);
+		padding: 0.4rem 2rem 0.4rem 0.8rem;
+		border-radius: 8px;
+		font-family: inherit;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: var(--text-primary);
+		cursor: pointer;
+		background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748B%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+		background-repeat: no-repeat;
+		background-position: right 0.7rem top 50%;
+		background-size: 0.65rem auto;
+		transition: all 0.2s ease;
+	}
+
+	.currency-selector select:hover {
+		border-color: var(--color-primary);
+	}
+
+	.lang-toggle {
+		font-size: 0.875rem;
+		font-weight: 600;
+		padding: 0.4rem 0.8rem;
+		border: 1px solid var(--border-color);
+		border-radius: 8px;
+		text-decoration: none;
+		color: var(--text-primary);
+		transition: all 0.2s ease;
+	}
+
+	.lang-toggle:hover {
+		background: var(--color-primary);
+		color: white;
+		border-color: var(--color-primary);
+	}
+
+	/* Bottom Navigation (Mobile) */
+	.bottom-nav {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 65px;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(12px);
+		border-top: 1px solid var(--border-color);
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		z-index: 100;
+		padding-bottom: env(safe-area-inset-bottom);
+	}
+
+	.bottom-nav-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.25rem;
+		color: var(--text-secondary);
+		text-decoration: none;
+		font-size: 0.7rem;
+		font-weight: 500;
+		transition: color 0.2s ease;
+	}
+
+	.bottom-nav-item:hover, .bottom-nav-item.active {
+		color: var(--color-primary);
+	}
+
+	/* Desktop Adjustments */
+	@media (min-width: 900px) {
+		.bottom-nav {
+			display: none;
+		}
+		main {
+			padding-bottom: 0;
+		}
+		.desktop-menu {
+			display: flex;
+			gap: 0.5rem;
+		}
+	}
+</style>
