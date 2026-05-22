@@ -24,103 +24,288 @@ const subcategories = [
 ];
 ---
 
-<Layout title={`${pageTitle} | RecorreChile`} lang={lang as 'es' | 'en'}>
-	<div class="page-header">
-		<div class="container">
-			<h1>{pageTitle}</h1>
-			<p>{description}</p>
-		</div>
-	</div>
+<Layout title={`${pageTitle} | RecorreSantiago`} lang={lang as 'es' | 'en'}>
+  <!-- ═══════════════════════════════════════════
+       HEADER CON MESH GRID Y BLOBS
+       ═══════════════════════════════════════════ -->
+  <div class="page-header">
+    <!-- Blobs decorativos -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    
+    <!-- Cuadrícula de fondo -->
+    <div class="mesh-grid"></div>
 
-	<section class="content-section">
-		<div class="container">
-			<div class="cards-grid">
-				{subcategories.map(sub => (
-					<a href={`/${lang}/inspiracion/${sub.id}`} class="section-card">
-						<div class="icon">{sub.icon}</div>
-						<h2>{sub.title}</h2>
-						<span class="view-more">{lang === 'es' ? 'Leer más ➔' : 'Read more ➔'}</span>
-					</a>
-				))}
-			</div>
-		</div>
-	</section>
+    <div class="header-inner container">
+      <span class="eyebrow">{lang === 'es' ? 'Ideas' : 'Ideas'}</span>
+      <h1 class="header-title">
+        {lang === 'es' ? 'Historias e ' : 'Stories & '}<em>{lang === 'es' ? 'Inspiración' : 'Inspiration'}</em>
+      </h1>
+      <p class="header-description">{description}</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       CONTENIDO
+       ═══════════════════════════════════════════ -->
+  <section class="content-section">
+    <div class="container">
+      <div class="cards-grid">
+        {subcategories.map(sub => (
+          <a href={`/${lang}/inspiracion/${sub.id}`} class="section-card">
+            <div class="icon-wrapper">
+              <span class="icon-emoji">{sub.icon}</span>
+            </div>
+            <h2>{sub.title}</h2>
+            <div class="view-more">
+              <span>{lang === 'es' ? 'Leer más' : 'Read more'}</span>
+              <svg class="arrow-svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 </Layout>
 
+<script>
+  // Añadir efecto interactivo para seguir al cursor con la luz del degradado
+  const cards = document.querySelectorAll('.section-card');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e: Event) => {
+      const mouseEvent = e as MouseEvent;
+      const rect = card.getBoundingClientRect();
+      const x = mouseEvent.clientX - rect.left;
+      const y = mouseEvent.clientY - rect.top;
+      (card as HTMLElement).style.setProperty('--x', `${x}px`);
+      (card as HTMLElement).style.setProperty('--y', `${y}px`);
+    });
+  });
+</script>
+
 <style>
-	.page-header {
-		background: linear-gradient(135deg, var(--color-accent), #059669);
-		color: white;
-		padding: 6rem 1.5rem 4rem;
-		text-align: center;
-	}
-	
-	.page-header h1 {
-		font-size: clamp(2.5rem, 5vw, 4rem);
-		font-weight: 700;
-		margin-bottom: 1rem;
-	}
-	
-	.page-header p {
-		font-size: 1.25rem;
-		opacity: 0.9;
-		max-width: 600px;
-		margin: 0 auto;
-	}
+  /* Neutralizar padding superior para que el header se integre bien */
+  :global(main:has(.page-header)) {
+    padding-top: 0 !important;
+  }
 
-	.container {
-		max-width: 1280px;
-		margin: 0 auto;
-		padding: 0 1.5rem;
-	}
+  /* ─── ENCABEZADO (HERO-HEADER) ────────────────────────────── */
+  .page-header {
+    background: #060d1e;
+    position: relative;
+    overflow: hidden;
+    padding: 9rem 1.5rem 6rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
 
-	.content-section {
-		padding: 5rem 0;
-	}
+  /* Cuadrícula sutil */
+  .mesh-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none;
+  }
 
-	.cards-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: 2rem;
-	}
+  /* Blobs decorativos */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  .blob-1 {
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.45), transparent 70%);
+    top: -50px;
+    right: 15%;
+    animation: floatBlob 8s ease-in-out infinite alternate;
+  }
+  .blob-2 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(52, 211, 153, 0.25), transparent 70%);
+    bottom: -50px;
+    left: 15%;
+    animation: floatBlob 10s ease-in-out infinite alternate-reverse;
+  }
 
-	.section-card {
-		background: var(--surface-color);
-		border-radius: 20px;
-		padding: 2.5rem;
-		text-align: center;
-		text-decoration: none;
-		color: var(--text-primary);
-		box-shadow: var(--shadow-md);
-		border: 1px solid var(--border-color);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 1rem;
-	}
+  @keyframes floatBlob {
+    from { transform: translateY(0px) scale(1); }
+    to { transform: translateY(20px) scale(1.05); }
+  }
 
-	.section-card:hover {
-		transform: translateY(-8px);
-		box-shadow: var(--shadow-lg);
-		border-color: var(--color-accent);
-	}
+  .header-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    animation: fadeUp 0.6s ease both;
+  }
 
-	.icon {
-		font-size: 3.5rem;
-		margin-bottom: 0.5rem;
-	}
+  .eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+  }
 
-	.section-card h2 {
-		font-size: 1.5rem;
-		font-weight: 600;
-	}
+  .header-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.01em;
+  }
 
-	.view-more {
-		color: var(--color-accent);
-		font-weight: 600;
-		font-size: 0.9rem;
-		margin-top: auto;
-		padding-top: 1rem;
-	}
+  .header-title em {
+    font-style: italic;
+    background: linear-gradient(90deg, #34d399 0%, #10b981 50%, #059669 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .header-description {
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ─── CONTENIDO Y TARJETAS ────────────────────────────────── */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .content-section {
+    padding: 5rem 0;
+    background: #091124;
+    position: relative;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+  }
+
+  .section-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px;
+    padding: 3rem 2.25rem;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(800px circle at var(--x, 0px) var(--y, 0px), rgba(255, 255, 255, 0.06), transparent 40%);
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+  }
+
+  .section-card:hover::before {
+    opacity: 1;
+  }
+
+  .section-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .icon-wrapper {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: inset 0 0 12px rgba(16, 185, 129, 0.1);
+  }
+
+  .icon-emoji {
+    font-size: 3rem;
+    transition: transform 0.4s ease;
+  }
+
+  .section-card:hover .icon-wrapper {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    transform: scale(1.05);
+  }
+
+  .section-card:hover .icon-emoji {
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  .section-card h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+  }
+
+  .view-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #34d399;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-top: auto;
+    transition: color 0.3s;
+  }
+
+  .arrow-svg {
+    transition: transform 0.3s;
+  }
+
+  .section-card:hover .view-more {
+    color: #059669;
+  }
+
+  .section-card:hover .arrow-svg {
+    transform: translateX(5px);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 </style>

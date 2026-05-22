@@ -10,95 +10,712 @@ export function getStaticPaths() {
     { id: 'naturaleza-aventura', es: 'Naturaleza y Aventura', en: 'Nature & Adventure' },
     { id: 'ocio-vida-nocturna', es: 'Ocio y Vida Nocturna', en: 'Leisure & Nightlife' },
   ];
-
-  return langs.flatMap(lang => 
+  return langs.flatMap(lang =>
     subcategories.map(sub => ({
       params: { lang, subcategory: sub.id },
-      props: { title: sub[lang as 'es'|'en'] }
+      props: { title: sub[lang as 'es'|'en'], id: sub.id }
     }))
   );
 }
 
-const { lang } = Astro.params;
+const { lang, subcategory: id } = Astro.params;
 const { title } = Astro.props;
 const t = useTranslations(lang as 'es' | 'en');
----
-<Layout title={`${title} | Descubre | RecorreChile`} lang={lang as 'es' | 'en'}>
-	<div class="page-header">
-		<div class="container">
-			<h1>{title}</h1>
-			<p>{lang === 'es' ? `Explora las mejores opciones de ${title.toLowerCase()} en Chile.` : `Explore the best options for ${title.toLowerCase()} in Chile.`}</p>
-		</div>
-	</div>
+const isES = lang === 'es';
 
-	<section class="content-section">
-		<div class="container">
-			<div class="placeholder-content">
-				<p>{lang === 'es' ? 'El contenido de esta sección se generará dinámicamente desde el CMS pronto.' : 'The content for this section will be generated dynamically from the CMS soon.'}</p>
-				<a href={`/${lang}/descubre`} class="btn btn-outline">{lang === 'es' ? 'Volver a Descubre' : 'Back to Discover'}</a>
-			</div>
-		</div>
-	</section>
+// ── Arte y Cultura ──────────────────────────────────────────────
+const arteCultura = {
+  hero: {
+    img: 'https://images.unsplash.com/photo-1531243269054-5ebf6f34081e?auto=format&fit=crop&q=80&w=1600',
+    subtitle: isES
+      ? 'Santiago vibra con museos de clase mundial, murales que cuentan historias y una escena cultural en constante efervescencia.'
+      : 'Santiago thrives with world-class museums, murals that tell stories, and a cultural scene in constant ferment.',
+  },
+  highlights: [
+    {
+      emoji: '🏛️',
+      name: isES ? 'Museo Nacional de Bellas Artes' : 'National Museum of Fine Arts',
+      desc: isES
+        ? 'El museo de arte más antiguo de Chile, inaugurado en 1880. Alberga más de 5.000 obras entre pinturas, esculturas y grabados de artistas chilenos e internacionales.'
+        : 'Chile\'s oldest art museum, inaugurated in 1880. Houses over 5,000 works including paintings, sculptures and prints by Chilean and international artists.',
+      tag: isES ? 'Museo · Entrada gratuita' : 'Museum · Free entry',
+      img: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🖼️',
+      name: isES ? 'Museo de Arte Contemporáneo (MAC)' : 'Museum of Contemporary Art (MAC)',
+      desc: isES
+        ? 'Ubicado en el Parque Forestal, el MAC exhibe las propuestas más vanguardistas del arte chileno y latinoamericano desde 1947.'
+        : 'Located in Parque Forestal, the MAC showcases the most avant-garde proposals of Chilean and Latin American art since 1947.',
+      tag: isES ? 'Arte contemporáneo' : 'Contemporary art',
+      img: 'https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🎨',
+      name: isES ? 'Barrio Italia — Galería de Murales' : 'Barrio Italia — Mural Gallery',
+      desc: isES
+        ? 'Un barrio entero convertido en galería al aire libre. Decenas de murales de artistas locales e internacionales transforman cada esquina en una obra de arte.'
+        : 'An entire neighborhood turned into an open-air gallery. Dozens of murals by local and international artists transform every corner into a work of art.',
+      tag: isES ? 'Arte urbano · Gratis' : 'Street art · Free',
+      img: 'https://images.unsplash.com/photo-1578301978018-3005759f48f7?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🎭',
+      name: isES ? 'Teatro Municipal de Santiago' : 'Santiago Municipal Theatre',
+      desc: isES
+        ? 'Desde 1857, el Teatro Municipal es la casa de la ópera, el ballet y la música clásica en Chile. Una joya arquitectónica neoclásica en pleno centro de la ciudad.'
+        : 'Since 1857, the Municipal Theatre has been the home of opera, ballet and classical music in Chile. A neoclassical architectural gem in the heart of the city.',
+      tag: isES ? 'Ópera · Ballet · Conciertos' : 'Opera · Ballet · Concerts',
+      img: 'https://images.unsplash.com/photo-1507924538820-ede94a04019d?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '📸',
+      name: isES ? 'Centro Cultural Palacio La Moneda' : 'La Moneda Palace Cultural Centre',
+      desc: isES
+        ? 'Bajo la plaza de La Moneda, este centro de más de 7.000 m² alberga exposiciones temporales de fotografía, artes visuales y patrimonio histórico chileno.'
+        : 'Beneath La Moneda plaza, this 7,000+ m² centre hosts temporary exhibitions of photography, visual arts and Chilean historical heritage.',
+      tag: isES ? 'Exposiciones · Cine' : 'Exhibitions · Cinema',
+      img: 'https://images.unsplash.com/photo-1569839333583-7375336cde72?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🏺',
+      name: isES ? 'Museo Chileno de Arte Precolombino' : 'Chilean Museum of Pre-Columbian Art',
+      desc: isES
+        ? 'Una de las colecciones más importantes de América Latina con más de 3.000 piezas que documentan 10.000 años de culturas originarias del continente.'
+        : 'One of the most important collections in Latin America with over 3,000 pieces documenting 10,000 years of indigenous cultures of the continent.',
+      tag: isES ? 'Patrimonio · Historia' : 'Heritage · History',
+      img: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&q=80&w=800',
+    },
+  ],
+  events: [
+    {
+      name: isES ? 'Noche de Museos' : 'Night of Museums',
+      date: isES ? 'Noviembre · Anual' : 'November · Annual',
+      desc: isES ? 'Más de 80 museos abren sus puertas de noche en forma gratuita en una fiesta cultural única.' : 'Over 80 museums open their doors at night for free in a unique cultural celebration.',
+      emoji: '🌙',
+    },
+    {
+      name: isES ? 'Festival Santiago a Mil' : 'Santiago a Mil Festival',
+      date: isES ? 'Enero · Anual' : 'January · Annual',
+      desc: isES ? 'El festival de artes escénicas más grande de América Latina con obras en espacios públicos y teatros.' : 'The largest performing arts festival in Latin America with shows in public spaces and theatres.',
+      emoji: '🎪',
+    },
+    {
+      name: isES ? 'Feria del Libro de Santiago' : 'Santiago Book Fair',
+      date: isES ? 'Octubre · Anual' : 'October · Annual',
+      desc: isES ? 'La mayor feria editorial de Chile con autores nacionales e internacionales, presentaciones y talleres.' : 'Chile\'s largest book fair with national and international authors, presentations and workshops.',
+      emoji: '📚',
+    },
+  ],
+  tip: isES
+    ? '💡 El primer domingo de cada mes, la mayoría de los museos estatales tienen entrada gratuita.'
+    : '💡 On the first Sunday of each month, most state museums have free admission.',
+};
+
+const gastronomia = {
+  hero: {
+    img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80&w=1600',
+    subtitle: isES ? 'Desde la cocina tradicional chilena hasta los mejores restaurantes de autor, Santiago es una fiesta para el paladar.' : 'From traditional Chilean cuisine to the best signature restaurants, Santiago is a feast for the palate.',
+  },
+  highlights: [
+    {
+      emoji: '🥩',
+      name: isES ? 'Mercado Central de Santiago' : 'Santiago Central Market',
+      desc: isES ? 'El templo de los mariscos y el pescado fresco de Chile. Un mercado histórico del siglo XIX donde comer un ceviche o una paila marina es una experiencia obligada.' : 'The temple of Chilean seafood and fresh fish. A historic 19th-century market where eating a ceviche or paila marina is a must.',
+      tag: isES ? 'Mariscos · Tradicional' : 'Seafood · Traditional',
+      img: 'https://images.unsplash.com/photo-1534482421-64566f976cfa?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🍷',
+      name: isES ? 'Barrio Lastarria — Restaurantes & Cafés' : 'Lastarria District — Restaurants & Cafés',
+      desc: isES ? 'El epicentro gastronómico bohemio de Santiago. Terrazas al aire libre, cafés de especialidad, coctelería artesanal y restaurantes de cocina chilena contemporánea.' : 'Santiago\'s bohemian gastronomic epicenter. Open-air terraces, specialty cafés, craft cocktail bars and contemporary Chilean cuisine restaurants.',
+      tag: isES ? 'Cocina contemporánea' : 'Contemporary cuisine',
+      img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🫕',
+      name: isES ? 'La Vega Central' : 'La Vega Central',
+      desc: isES ? 'El mercado popular más grande de Santiago. Frutas exóticas, especias, quesos artesanales y la auténtica cocina santiaguina en los fondos del mercado a precios locales.' : 'Santiago\'s largest popular market. Exotic fruits, spices, artisan cheeses and authentic Santiago cuisine at local prices.',
+      tag: isES ? 'Mercado · Auténtico' : 'Market · Authentic',
+      img: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '☕',
+      name: isES ? 'Café de especialidad en Providencia' : 'Specialty Coffee in Providencia',
+      desc: isES ? 'Santiago tiene una escena de café de especialidad de clase mundial. Tostadores como Café Quínoa, Origo o La Chimba ofrecen granos de origen único de distintas regiones de Chile y Latinoamérica.' : 'Santiago has a world-class specialty coffee scene. Roasters like Café Quínoa, Origo or La Chimba offer single-origin beans from different regions of Chile and Latin America.',
+      tag: isES ? 'Café · Especialidad' : 'Coffee · Specialty',
+      img: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🐟',
+      name: isES ? 'Cocina Chilena Tradicional' : 'Traditional Chilean Cuisine',
+      desc: isES ? 'El pastel de choclo, la cazuela, el charquicán y las empanadas son el alma de la cocina santiaguina. Encuéntralos en las picadas y restaurantes de barrio de toda la ciudad.' : 'Pastel de choclo, cazuela, charquicán and empanadas are the soul of Santiago cuisine. Find them at local diners and neighborhood restaurants throughout the city.',
+      tag: isES ? 'Cocina tradicional' : 'Traditional food',
+      img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🍸',
+      name: isES ? 'Ruta del Pisco Sour' : 'Pisco Sour Route',
+      desc: isES ? 'El pisco sour chileno es una religión. Desde los bares clásicos del centro hasta las coctelería de diseño en Vitacura, la ruta del pisco recorre lo mejor de la mixología local.' : 'The Chilean pisco sour is a religion. From classic downtown bars to design cocktail lounges in Vitacura, the pisco route covers the best of local mixology.',
+      tag: isES ? 'Coctelería · Cultura' : 'Cocktails · Culture',
+      img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&q=80&w=800',
+    },
+  ],
+  events: [
+    {
+      name: isES ? 'Santiago Food Week' : 'Santiago Food Week',
+      date: isES ? 'Junio · Anual' : 'June · Annual',
+      desc: isES ? 'Los mejores restaurantes de la ciudad ofrecen menús de degustación a precios accesibles durante una semana.' : 'The city\'s best restaurants offer tasting menus at accessible prices for one week.',
+      emoji: '🍽️',
+    },
+    {
+      name: isES ? 'Mercado de Providencia' : 'Providencia Market',
+      date: isES ? 'Todos los fines de semana' : 'Every weekend',
+      desc: isES ? 'Productores locales, quesos artesanales, vinos naturales y street food gourmet en el corazón de Providencia.' : 'Local producers, artisan cheeses, natural wines and gourmet street food in the heart of Providencia.',
+      emoji: '🧀',
+    },
+    {
+      name: isES ? 'Ruta del Vino — Valle del Maipo' : 'Wine Route — Maipo Valley',
+      date: isES ? 'Todo el año' : 'All year round',
+      desc: isES ? 'A solo 45 minutos de Santiago, el Valle del Maipo produce algunos de los mejores Cabernet Sauvignon del mundo. Visitas con degustación incluidas.' : 'Just 45 minutes from Santiago, Maipo Valley produces some of the world\'s best Cabernet Sauvignon. Visits with tastings included.',
+      emoji: '🍷',
+    },
+  ],
+  tip: isES ? '💡 En La Vega Central, llega antes de las 10am para encontrar los mejores precios y la mayor variedad de productos frescos.' : '💡 At La Vega Central, arrive before 10am to find the best prices and the widest variety of fresh produce.',
+};
+
+const naturaleza = {
+  hero: {
+    img: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&q=80&w=1600',
+    subtitle: isES ? 'La Cordillera de los Andes a tus espaldas, parques urbanos de ensueño y aventuras para todos los niveles.' : 'The Andes mountains at your back, dreamy urban parks and adventures for all levels.',
+  },
+  highlights: [
+    {
+      emoji: '⛷️',
+      name: isES ? 'Valle Nevado — Esquí en los Andes' : 'Valle Nevado — Skiing in the Andes',
+      desc: isES ? 'A solo 60 km de Santiago, Valle Nevado es uno de los centros de esquí más grandes de Sudamérica con más de 30 pistas y nieve garantizada de junio a septiembre.' : 'Just 60 km from Santiago, Valle Nevado is one of South America\'s largest ski resorts with over 30 runs and guaranteed snow from June to September.',
+      tag: isES ? 'Esquí · Snowboard · Invierno' : 'Ski · Snowboard · Winter',
+      img: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🌲',
+      name: isES ? 'Parque Metropolitano — Cerro San Cristóbal' : 'Metropolitan Park — San Cristóbal Hill',
+      desc: isES ? 'El pulmón verde de Santiago. Con 722 hectáreas, el parque ofrece senderos para trekking, zoológico, piscinas y una vista panorámica de 360° de toda la ciudad y la cordillera.' : 'Santiago\'s green lung. With 722 hectares, the park offers hiking trails, a zoo, swimming pools and a 360° panoramic view of the entire city and the mountains.',
+      tag: isES ? 'Trekking · Vistas · Familia' : 'Hiking · Views · Family',
+      img: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🧗',
+      name: isES ? 'Cajón del Maipo' : 'Cajón del Maipo',
+      desc: isES ? 'El paraíso natural a las puertas de Santiago. Rafting en el río Maipo, senderismo por glaciares, termas naturales y el Embalse El Yeso a 2.475 metros de altura.' : 'The natural paradise at Santiago\'s doorstep. Rafting on the Maipo river, glacier hiking, natural hot springs and El Yeso Reservoir at 2,475 meters altitude.',
+      tag: isES ? 'Rafting · Trekking · Termas' : 'Rafting · Hiking · Hot springs',
+      img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🚵',
+      name: isES ? 'Cerro Manquehue — Mountain Bike' : 'Cerro Manquehue — Mountain Bike',
+      desc: isES ? 'El cerro favorito de los santiaguinos para el deporte de montaña. Rutas de mountain bike y trekking con vistas privilegiadas del valle de Santiago rodeado de la cordillera.' : 'The favorite hill of Santiago residents for mountain sports. Mountain biking and trekking routes with privileged views of the Santiago valley surrounded by the mountain range.',
+      tag: isES ? 'Mountain bike · Trekking' : 'Mountain bike · Hiking',
+      img: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🏞️',
+      name: isES ? 'Reserva Nacional Río Clarillo' : 'Río Clarillo National Reserve',
+      desc: isES ? 'A 45 km de Santiago, esta reserva de 10.000 hectáreas es hogar del cóndor andino, el puma y el guanaco. Senderos bien señalizados para todos los niveles de experiencia.' : '45 km from Santiago, this 10,000-hectare reserve is home to the Andean condor, puma and guanaco. Well-marked trails for all experience levels.',
+      tag: isES ? 'Fauna · Naturaleza · Senderismo' : 'Wildlife · Nature · Hiking',
+      img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🪂',
+      name: isES ? 'Parapente en Chicureo' : 'Paragliding in Chicureo',
+      desc: isES ? 'Lánzate desde las laderas del precordillerano Chicureo y sobrevuela el Valle de Santiago. Vuelos tándem disponibles para principiantes con instructores certificados.' : 'Launch from the pre-Andean slopes of Chicureo and fly over the Santiago Valley. Tandem flights available for beginners with certified instructors.',
+      tag: isES ? 'Parapente · Adrenalina' : 'Paragliding · Adrenaline',
+      img: 'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80&w=800',
+    },
+  ],
+  events: [
+    {
+      name: isES ? 'Temporada de esquí — Valle Nevado' : 'Ski Season — Valle Nevado',
+      date: isES ? 'Junio – Septiembre' : 'June – September',
+      desc: isES ? 'La temporada de nieve transforma los Andes en un destino de clase mundial para el esquí y el snowboard.' : 'The snow season transforms the Andes into a world-class destination for skiing and snowboarding.',
+      emoji: '🏔️',
+    },
+    {
+      name: isES ? 'Ultra Trail Cajón del Maipo' : 'Ultra Trail Cajón del Maipo',
+      date: isES ? 'Marzo · Anual' : 'March · Annual',
+      desc: isES ? 'Una de las carreras de montaña más desafiantes de Chile con recorridos de 20 a 80 km por el espectacular Cajón del Maipo.' : 'One of Chile\'s most challenging mountain races with routes of 20 to 80 km through the spectacular Cajón del Maipo.',
+      emoji: '🏃',
+    },
+    {
+      name: isES ? 'Festival Andino de Montaña' : 'Andean Mountain Festival',
+      date: isES ? 'Enero · Anual' : 'January · Annual',
+      desc: isES ? 'Charlas de alpinismo, exposiciones de fotografía de naturaleza y guías de montaña locales comparten sus rutas favoritas.' : 'Mountaineering talks, nature photography exhibitions and local mountain guides share their favorite routes.',
+      emoji: '⛺',
+    },
+  ],
+  tip: isES ? '💡 En verano (diciembre–marzo), el Cajón del Maipo es ideal para rafting. En invierno (junio–agosto), los cerros se llenan de nieve perfecta para esquiar.' : '💡 In summer (December–March), Cajón del Maipo is ideal for rafting. In winter (June–August), the hills fill with perfect snow for skiing.',
+};
+
+const ocio = {
+  hero: {
+    img: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=1600',
+    subtitle: isES ? 'Desde rooftops con vista a los Andes hasta clubes underground, Santiago ofrece entretenimiento para todos los gustos.' : 'From rooftops with Andes views to underground clubs, Santiago offers entertainment for every taste.',
+  },
+  highlights: [
+    {
+      emoji: '🎵',
+      name: isES ? 'Club de Jazz — Barrio Bellavista' : 'Jazz Club — Barrio Bellavista',
+      desc: isES ? 'El Barrio Bellavista es el epicentro de la noche santiaguina. Jazz en vivo, bares de autor, boliches de rock y una energía que no para hasta el amanecer los fines de semana.' : 'Barrio Bellavista is the epicenter of Santiago nightlife. Live jazz, craft bars, rock clubs and an energy that doesn\'t stop until dawn on weekends.',
+      tag: isES ? 'Música en vivo · Cócteles' : 'Live music · Cocktails',
+      img: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🌆',
+      name: isES ? 'Rooftop del Costanera Center' : 'Costanera Center Rooftop',
+      desc: isES ? 'El mirador Sky Costanera, a 300 metros de altura, ofrece una vista de 360° de Santiago, los Andes y el océano Pacífico en días despejados. El perfecto inicio de noche.' : 'The Sky Costanera viewpoint, at 300 meters height, offers a 360° view of Santiago, the Andes and the Pacific Ocean on clear days. The perfect start to the night.',
+      tag: isES ? 'Mirador · Vistas · Icónico' : 'Viewpoint · Views · Iconic',
+      img: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🎰',
+      name: isES ? 'Casino del Parque — Entretenimiento' : 'Casino del Parque — Entertainment',
+      desc: isES ? 'Juegos de mesa, tragamonedas, restaurantes gourmet y espectáculos en vivo en un complejo de entretenimiento de primer nivel en el corazón del parque O\'Higgins.' : 'Table games, slot machines, gourmet restaurants and live shows in a first-class entertainment complex in the heart of O\'Higgins Park.',
+      tag: isES ? 'Casino · Shows · Restaurantes' : 'Casino · Shows · Restaurants',
+      img: 'https://images.unsplash.com/photo-1596838132731-3301c3fd4317?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🎭',
+      name: isES ? 'Teatro Caupolicán — Conciertos' : 'Teatro Caupolicán — Concerts',
+      desc: isES ? 'La sala de conciertos más icónica de Santiago. Capacidad para 5.000 personas y una cartelera que incluye a los mejores artistas chilenos e internacionales de rock, pop y electrónica.' : 'Santiago\'s most iconic concert hall. Capacity for 5,000 people and a program featuring the best Chilean and international rock, pop and electronic artists.',
+      tag: isES ? 'Conciertos · Espectáculos' : 'Concerts · Shows',
+      img: 'https://images.unsplash.com/photo-1540039155733-5bb30b631a4b?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🎳',
+      name: isES ? 'Barrio Italia de Noche' : 'Barrio Italia at Night',
+      desc: isES ? 'De día es galería de arte y diseño; de noche se transforma en uno de los barrios más animados de Santiago con bares de barrio, cervecerías artesanales y restaurantes hasta la madrugada.' : 'By day it\'s an art and design gallery; by night it transforms into one of Santiago\'s liveliest neighborhoods with local bars, craft breweries and restaurants until late.',
+      tag: isES ? 'Bares · Cervecería · Ambiente' : 'Bars · Brewery · Atmosphere',
+      img: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      emoji: '🎡',
+      name: isES ? 'Fantasilandia — Parque de Atracciones' : 'Fantasilandia — Amusement Park',
+      desc: isES ? 'El parque de atracciones más grande de Chile en el corazón del Parque O\'Higgins. Montañas rusas, atracciones acuáticas y shows perfectos para toda la familia.' : 'Chile\'s largest amusement park in the heart of O\'Higgins Park. Roller coasters, water rides and shows perfect for the whole family.',
+      tag: isES ? 'Familia · Diversión · Adrenalina' : 'Family · Fun · Adrenaline',
+      img: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&q=80&w=800',
+    },
+  ],
+  events: [
+    {
+      name: isES ? 'Lollapalooza Chile' : 'Lollapalooza Chile',
+      date: isES ? 'Marzo · Anual' : 'March · Annual',
+      desc: isES ? 'El festival de música más grande de Chile en el Parque Bicentenario. Tres días con los mejores artistas internacionales y nacionales.' : 'Chile\'s largest music festival at Bicentenario Park. Three days with the best international and national artists.',
+      emoji: '🎸',
+    },
+    {
+      name: isES ? 'Nochebuena en Plaza de Armas' : 'Christmas Eve at Plaza de Armas',
+      date: isES ? '24 de Diciembre' : 'December 24th',
+      desc: isES ? 'Miles de santiaguinos se reúnen en la Plaza de Armas para celebrar la Nochebuena con música, luces y el histórico Te Deum.' : 'Thousands of Santiago residents gather at Plaza de Armas to celebrate Christmas Eve with music, lights and the historic Te Deum.',
+      emoji: '🎄',
+    },
+    {
+      name: isES ? 'Festival de Cine de Santiago' : 'Santiago Film Festival',
+      date: isES ? 'Noviembre · Anual' : 'November · Annual',
+      desc: isES ? 'SANFIC es el festival de cine más importante de Chile con más de 100 películas de todo el mundo y secciones de competencia internacional.' : 'SANFIC is Chile\'s most important film festival with over 100 films from around the world and international competition sections.',
+      emoji: '🎬',
+    },
+  ],
+  tip: isES ? '💡 Los jueves por la noche son el nuevo viernes en Santiago. Los bares y restaurantes del Barrio Italia y Lastarria se llenan a partir de las 21:00.' : '💡 Thursday nights are the new Friday in Santiago. Bars and restaurants in Barrio Italia and Lastarria fill up from 9pm.',
+};
+
+const pageData = id === 'arte-cultura' ? arteCultura
+  : id === 'gastronomia' ? gastronomia
+  : id === 'naturaleza-aventura' ? naturaleza
+  : ocio;
+
+// Textos dinámicos por sección
+const sectionSubtitle = {
+  'arte-cultura':       isES ? 'Los espacios culturales que definen Santiago' : 'The cultural spaces that define Santiago',
+  'gastronomia':        isES ? 'Los sabores y lugares gastronómicos imperdibles' : 'The unmissable flavors and gastronomic spots',
+  'naturaleza-aventura':isES ? 'Naturaleza y aventura a las puertas de la ciudad' : 'Nature and adventure at the city gates',
+  'ocio-vida-nocturna': isES ? 'Los mejores planes de ocio y entretenimiento' : 'The best leisure and entertainment plans',
+}[id] ?? '';
+
+const eventsSubtitle = {
+  'arte-cultura':       isES ? 'Santiago celebra la cultura durante todo el año' : 'Santiago celebrates culture all year long',
+  'gastronomia':        isES ? 'Ferias, mercados y eventos gastronómicos del año' : 'Food fairs, markets and gastronomic events of the year',
+  'naturaleza-aventura':isES ? 'Temporadas, carreras y festivales al aire libre' : 'Seasons, races and outdoor festivals',
+  'ocio-vida-nocturna': isES ? 'Los eventos que marcan el calendario de Santiago' : 'The events that mark Santiago\'s calendar',
+}[id] ?? '';
+
+const ctaDesc = {
+  'arte-cultura':       isES ? 'Planifica tu visita a los espacios culturales de Santiago.' : 'Plan your visit to Santiago\'s cultural spaces.',
+  'gastronomia':        isES ? 'Organiza tu ruta gastronómica por Santiago.' : 'Organize your gastronomic route through Santiago.',
+  'naturaleza-aventura':isES ? 'Prepara tu próxima aventura en la naturaleza.' : 'Prepare your next nature adventure.',
+  'ocio-vida-nocturna': isES ? 'Descubre los mejores planes de ocio en Santiago.' : 'Discover the best leisure plans in Santiago.',
+}[id] ?? '';
+---
+
+<Layout title={`${title} | Descubre | RecorreSantiago`} lang={lang as 'es' | 'en'}>
+
+  <!-- HERO -->
+  <div class="cat-hero" style={`background-image: url('${pageData.hero.img}')`}>
+    <div class="cat-hero-overlay"></div>
+    <div class="cat-hero-inner">
+      <a href={`/${lang}/descubre`} class="back-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        {isES ? 'Descubre' : 'Discover'}
+      </a>
+      <h1>{title}</h1>
+      <p>{pageData.hero.subtitle}</p>
+    </div>
+  </div>
+
+  {(id === 'arte-cultura' || id === 'gastronomia' || id === 'naturaleza-aventura' || id === 'ocio-vida-nocturna') && (
+    <div class="page-body">
+
+      <!-- TIP BANNER -->
+      <div class="tip-banner container">
+        <span>{pageData.tip}</span>
+      </div>
+
+      <!-- HIGHLIGHTS -->
+      <section class="section container">
+        <div class="section-head">
+          <h2>{isES ? 'Lugares imprescindibles' : 'Must-see places'}</h2>
+          <p>{sectionSubtitle}</p>
+        </div>
+        <div class="cards-grid">
+          {pageData.highlights.map(place => (
+            <article class="place-card">
+              <div class="place-img-wrap">
+                <img src={place.img} alt={place.name} loading="lazy" />
+                <span class="place-emoji">{place.emoji}</span>
+              </div>
+              <div class="place-info">
+                <span class="place-tag">{place.tag}</span>
+                <h3>{place.name}</h3>
+                <p>{place.desc}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- EVENTS -->
+      <section class="section events-section">
+        <div class="container">
+          <div class="section-head">
+            <h2>{isES ? 'Eventos y festivales' : 'Events & festivals'}</h2>
+            <p>{eventsSubtitle}</p>
+          </div>
+          <div class="events-grid">
+            {pageData.events.map(ev => (
+              <div class="event-card">
+                <span class="event-emoji">{ev.emoji}</span>
+                <div>
+                  <span class="event-date">{ev.date}</span>
+                  <h3>{ev.name}</h3>
+                  <p>{ev.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <div class="cta-section container">
+        <h2>{isES ? '¿Listo para explorar?' : 'Ready to explore?'}</h2>
+        <p>{ctaDesc}</p>
+        <div class="cta-actions">
+          <a href={`/${lang}/planifica/itinerarios`} class="btn-primary">{isES ? 'Ver itinerarios' : 'View itineraries'}</a>
+          <a href={`/${lang}/descubre`} class="btn-ghost">{isES ? 'Seguir explorando' : 'Keep exploring'}</a>
+        </div>
+      </div>
+
+    </div>
+  )}
+
+
+
 </Layout>
 
 <style>
-	.page-header {
-		background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
-		color: white;
-		padding: 5rem 1.5rem 3rem;
-		text-align: center;
-	}
-	
-	.page-header h1 {
-		font-size: clamp(2rem, 4vw, 3.5rem);
-		font-weight: 700;
-		margin-bottom: 1rem;
-	}
-	
-	.page-header p {
-		font-size: 1.125rem;
-		opacity: 0.9;
-		max-width: 600px;
-		margin: 0 auto;
-	}
+  /* HERO */
+  .cat-hero {
+    min-height: 55vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+  }
+  .cat-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(5,10,25,0.92) 0%, rgba(5,10,25,0.4) 60%, transparent 100%);
+  }
+  .cat-hero-inner {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 1.5rem 3.5rem;
+    max-width: 860px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: #fff; }
+  .cat-hero-inner h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    letter-spacing: -0.03em;
+  }
+  .cat-hero-inner p {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: rgba(255,255,255,0.7);
+    max-width: 600px;
+    line-height: 1.7;
+  }
 
-	.container {
-		max-width: 1280px;
-		margin: 0 auto;
-		padding: 0 1.5rem;
-	}
+  /* BODY */
+  .page-body { background: var(--bg-color); }
 
-	.content-section {
-		padding: 5rem 0;
-	}
+  /* TIP */
+  .tip-banner {
+    background: linear-gradient(135deg, #fff7ed, #ffe4e6);
+    border: 1px solid #fecaca;
+    border-radius: 14px;
+    padding: 1rem 1.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0;
+    color: #9f1239;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
 
-	.placeholder-content {
-		text-align: center;
-		padding: 4rem;
-		background: var(--surface-color);
-		border-radius: 20px;
-		border: 1px dashed var(--border-color);
-	}
+  /* CONTAINER */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
 
-	.placeholder-content p {
-		font-size: 1.25rem;
-		color: var(--text-secondary);
-		margin-bottom: 2rem;
-	}
+  /* SECTIONS */
+  .section { padding: 4rem 0; }
+  .section-head {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .section-head h2 {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+  .section-head p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+  }
 
-	.btn-outline {
-		display: inline-block;
-		padding: 0.75rem 1.5rem;
-		border-radius: 999px;
-		font-weight: 600;
-		text-decoration: none;
-		color: var(--color-primary);
-		border: 2px solid var(--color-primary);
-		transition: all 0.3s ease;
-	}
+  /* CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.75rem;
+  }
+  .place-card {
+    background: var(--surface-color);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .place-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.12);
+  }
+  .place-img-wrap {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+  .place-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .place-card:hover .place-img-wrap img { transform: scale(1.05); }
+  .place-emoji {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    font-size: 1.5rem;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    padding: 0.3rem 0.5rem;
+    line-height: 1;
+  }
+  .place-info { padding: 1.25rem 1.5rem 1.5rem; }
+  .place-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    background: rgba(225,29,72,0.07);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .place-info h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  .place-info p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
 
-	.btn-outline:hover {
-		background: var(--color-primary);
-		color: white;
-	}
+  /* EVENTS */
+  .events-section { background: #0f172a; }
+  .events-section .section-head h2 { color: #fff; }
+  .events-section .section-head p { color: rgba(255,255,255,0.5); }
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .event-card {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 1.5rem;
+    transition: background 0.2s;
+  }
+  .event-card:hover { background: rgba(255,255,255,0.08); }
+  .event-emoji {
+    font-size: 2rem;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 0.1rem;
+  }
+  .event-date {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #fb7185;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.35rem;
+  }
+  .event-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+  .event-card p {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+  }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    padding: 5rem 1.5rem;
+  }
+  .cta-section h2 {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+  .cta-section p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.875rem 2rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.975rem;
+    text-decoration: none;
+    background: linear-gradient(135deg, #e11d48, #be123c);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(225,29,72,0.35);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(225,29,72,0.5);
+  }
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.875rem 2rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.975rem;
+    text-decoration: none;
+    border: 1.5px solid var(--border-color);
+    color: var(--text-primary);
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  /* COMING SOON */
+  .coming-soon {
+    text-align: center;
+    padding: 6rem 1.5rem;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .events-grid { grid-template-columns: 1fr; }
+  }
 </style>
