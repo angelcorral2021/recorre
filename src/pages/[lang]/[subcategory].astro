@@ -1,6 +1,6 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
-import { useTranslations } from '../../../i18n/ui';
+import Layout from '../../layouts/Layout.astro';
+import { useTranslations } from '../../i18n/ui';
 
 export function getStaticPaths() {
   const langs = ['es', 'en'];
@@ -356,13 +356,13 @@ const ctaDesc = {
 }[id] ?? '';
 ---
 
-<Layout title={`${title} | Descubre | RecorreSantiago`} lang={lang as 'es' | 'en'}>
+<Layout title={`${title} | Inicio | RecorreSantiago`} lang={lang as 'es' | 'en'}>
 
   <!-- HERO -->
   <div class="cat-hero" style={`background-image: url('${pageData.hero.img}')`}>
     <div class="cat-hero-overlay"></div>
     <div class="cat-hero-inner">
-      <a href={`/${lang}/descubre`} class="back-link">
+      <a href={`/${lang}/`} class="back-link">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         {isES ? 'Descubre' : 'Discover'}
       </a>
@@ -430,7 +430,7 @@ const ctaDesc = {
         <p>{ctaDesc}</p>
         <div class="cta-actions">
           <a href={`/${lang}/planifica/itinerarios`} class="btn-primary">{isES ? 'Ver itinerarios' : 'View itineraries'}</a>
-          <a href={`/${lang}/descubre`} class="btn-ghost">{isES ? 'Seguir explorando' : 'Keep exploring'}</a>
+          <a href={`/${lang}/`} class="btn-ghost">{isES ? 'Seguir explorando' : 'Keep exploring'}</a>
         </div>
       </div>
 
@@ -719,3 +719,4 @@ const ctaDesc = {
     .events-grid { grid-template-columns: 1fr; }
   }
 </style>
+
