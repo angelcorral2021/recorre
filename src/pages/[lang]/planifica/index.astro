@@ -18,10 +18,10 @@ const description = lang === 'es'
   : 'Everything you need to know to organize your perfect trip.';
 
 const subcategories = [
-  { id: 'como-llegar', title: lang === 'es' ? 'Cómo llegar' : 'How to get there', icon: '✈️' },
-  { id: 'donde-alojar', title: lang === 'es' ? 'Dónde alojar' : 'Where to stay', icon: '🏨' },
-  { id: 'itinerarios', title: lang === 'es' ? 'Itinerarios' : 'Itineraries', icon: '🗺️' },
-  { id: 'consejos', title: lang === 'es' ? 'Consejos prácticos' : 'Practical tips', icon: '💡' },
+  { id: 'como-llegar', title: lang === 'es' ? 'Cómo llegar' : 'How to get there', icon: '<svg width="48" height="48" viewBox="0 0 48 48"><polygon points="8,8 40,8 8,40" fill="#E03C31"/><circle cx="30" cy="30" r="10" fill="#F2B705"/></svg>' },
+  { id: 'donde-alojar', title: lang === 'es' ? 'Dónde alojar' : 'Where to stay', icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="8" y="8" width="32" height="32" fill="#005B9F"/><circle cx="24" cy="24" r="8" fill="#FFFFFF"/></svg>' },
+  { id: 'itinerarios', title: lang === 'es' ? 'Itinerarios' : 'Itineraries', icon: '<svg width="48" height="48" viewBox="0 0 48 48"><path d="M 8 24 A 16 16 0 0 1 40 24" fill="#E03C31"/><rect x="16" y="24" width="16" height="16" fill="#F2B705"/></svg>' },
+  { id: 'consejos', title: lang === 'es' ? 'Consejos prácticos' : 'Practical tips', icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="10" y="10" width="14" height="14" fill="#FFFFFF"/><rect x="24" y="24" width="14" height="14" fill="#E03C31"/><circle cx="31" cy="17" r="7" fill="#005B9F"/><circle cx="17" cy="31" r="7" fill="#F2B705"/></svg>' },
 ];
 ---
 
@@ -55,7 +55,7 @@ const subcategories = [
         {subcategories.map(sub => (
           <a href={`/${lang}/planifica/${sub.id}`} class="section-card">
             <div class="icon-wrapper">
-              <span class="icon-emoji">{sub.icon}</span>
+              <span class="icon-bauhaus" set:html={sub.icon} />
             </div>
             <h2>{sub.title}</h2>
             <div class="view-more">
@@ -92,12 +92,11 @@ const subcategories = [
 
   /* ─── ENCABEZADO (HERO-HEADER) ────────────────────────────── */
   .page-header {
-    background: #060d1e;
+    background: transparent;
     position: relative;
     overflow: hidden;
-    padding: 9rem 1.5rem 6rem;
+    padding: 3.15rem 1.5rem 5.85rem;
     text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   /* Cuadrícula sutil */
@@ -194,21 +193,21 @@ const subcategories = [
 
   .content-section {
     padding: 5rem 0;
-    background: #091124;
+    background: transparent;
     position: relative;
   }
 
   .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
   }
 
   .section-card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 24px;
-    padding: 3rem 2.25rem;
+    border-radius: 0; /* Bauhaus */
+    padding: 2rem 1.5rem;
     text-align: center;
     text-decoration: none;
     color: #ffffff;
@@ -246,37 +245,37 @@ const subcategories = [
   }
 
   .icon-wrapper {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background: rgba(2, 132, 199, 0.1);
-    border: 1px solid rgba(2, 132, 199, 0.2);
+    width: 70px;
+    height: 70px;
+    border-radius: 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: inset 0 0 12px rgba(2, 132, 199, 0.1);
   }
 
-  .icon-emoji {
-    font-size: 3rem;
-    transition: transform 0.4s ease;
+  .icon-bauhaus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .section-card:hover .icon-wrapper {
-    background: rgba(2, 132, 199, 0.2);
-    border-color: rgba(2, 132, 199, 0.4);
-    box-shadow: 0 0 20px rgba(2, 132, 199, 0.3);
-    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05) rotate(5deg);
   }
 
-  .section-card:hover .icon-emoji {
-    transform: scale(1.1) rotate(5deg);
+  .section-card:hover .icon-bauhaus {
+    transform: scale(1.1);
   }
 
   .section-card h2 {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     font-weight: 600;
     letter-spacing: -0.01em;
     color: #ffffff;

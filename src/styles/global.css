@@ -20,6 +20,10 @@
 
 body {
   background-color: var(--background);
+  background-image: linear-gradient(rgba(9, 17, 36, 0.75), rgba(9, 17, 36, 0.95)), url('/santiago-cover.png');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
   color: var(--foreground);
   font-family: var(--font-sans);
   transition: background-color 0.3s ease, color 0.3s ease;

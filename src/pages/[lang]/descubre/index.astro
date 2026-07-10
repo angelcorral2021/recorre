@@ -18,10 +18,10 @@ const description = lang === 'es'
   : 'Explore the wonders Santiago has to offer by category.';
 
 const subcategories = [
-  { id: 'arte-cultura', title: lang === 'es' ? 'Arte y Cultura' : 'Art & Culture', icon: '🎨' },
-  { id: 'gastronomia', title: lang === 'es' ? 'Gastronomía' : 'Gastronomy', icon: '🍷' },
-  { id: 'naturaleza-aventura', title: lang === 'es' ? 'Naturaleza y Aventura' : 'Nature & Adventure', icon: '🏔️' },
-  { id: 'ocio-vida-nocturna', title: lang === 'es' ? 'Ocio y Vida Nocturna' : 'Leisure & Nightlife', icon: '🎉' },
+  { id: 'arte-cultura', title: lang === 'es' ? 'Arte y Cultura' : 'Art & Culture', icon: '<svg width="48" height="48" viewBox="0 0 48 48"><circle cx="20" cy="20" r="14" fill="#E03C31"/><polygon points="24,14 42,40 6,40" fill="#005B9F" opacity="0.9"/></svg>' },
+  { id: 'gastronomia', title: lang === 'es' ? 'Gastronomía' : 'Gastronomy', icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="8" y="24" width="20" height="20" fill="#F2B705"/><path d="M 20 8 A 16 16 0 0 1 20 40 Z" fill="#FFFFFF" opacity="0.9"/></svg>' },
+  { id: 'naturaleza-aventura', title: lang === 'es' ? 'Naturaleza y Aventura' : 'Nature & Adventure', icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="8" y="8" width="10" height="32" fill="#E03C31"/><rect x="22" y="16" width="10" height="24" fill="#005B9F"/><rect x="36" y="24" width="10" height="16" fill="#F2B705"/></svg>' },
+  { id: 'ocio-vida-nocturna', title: lang === 'es' ? 'Ocio y Vida Nocturna' : 'Leisure & Nightlife', icon: '<svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="#F2B705"/><line x1="8" y1="8" x2="40" y2="40" stroke="#FFFFFF" stroke-width="6"/></svg>' },
 ];
 ---
 
@@ -55,7 +55,7 @@ const subcategories = [
         {subcategories.map(sub => (
           <a href={`/${lang}/descubre/${sub.id}`} class="section-card">
             <div class="icon-wrapper">
-              <span class="icon-emoji">{sub.icon}</span>
+              <span class="icon-bauhaus" set:html={sub.icon} />
             </div>
             <h2>{sub.title}</h2>
             <div class="view-more">
@@ -92,12 +92,11 @@ const subcategories = [
 
   /* ─── ENCABEZADO (HERO-HEADER) ────────────────────────────── */
   .page-header {
-    background: #060d1e;
+    background: transparent;
     position: relative;
     overflow: hidden;
-    padding: 9rem 1.5rem 6rem;
+    padding: 3.15rem 1.5rem 5.85rem;
     text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   /* Cuadrícula sutil */
@@ -194,21 +193,21 @@ const subcategories = [
 
   .content-section {
     padding: 5rem 0;
-    background: #091124;
+    background: transparent;
     position: relative;
   }
 
   .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
   }
 
   .section-card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 24px;
-    padding: 3rem 2.25rem;
+    border-radius: 0; /* Bauhaus */
+    padding: 2rem 1.5rem;
     text-align: center;
     text-decoration: none;
     color: #ffffff;
@@ -246,37 +245,37 @@ const subcategories = [
   }
 
   .icon-wrapper {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background: rgba(225, 29, 72, 0.1);
-    border: 1px solid rgba(225, 29, 72, 0.2);
+    width: 70px;
+    height: 70px;
+    border-radius: 0; /* Estilo arquitectónico Bauhaus */
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: inset 0 0 12px rgba(225, 29, 72, 0.1);
   }
 
-  .icon-emoji {
-    font-size: 3rem;
-    transition: transform 0.4s ease;
+  .icon-bauhaus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .section-card:hover .icon-wrapper {
-    background: rgba(225, 29, 72, 0.2);
-    border-color: rgba(225, 29, 72, 0.4);
-    box-shadow: 0 0 20px rgba(225, 29, 72, 0.3);
-    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05) rotate(5deg);
   }
 
-  .section-card:hover .icon-emoji {
-    transform: scale(1.1) rotate(5deg);
+  .section-card:hover .icon-bauhaus {
+    transform: scale(1.1);
   }
 
   .section-card h2 {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     font-weight: 600;
     letter-spacing: -0.01em;
     color: #ffffff;
