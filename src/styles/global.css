@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  
+  --font-sans: "Outfit", sans-serif;
+}
+
+:root {
+  --background: #09090b; /* Fondo oscuro elegante */
+  --foreground: #fafafa;
+  --primary: #3b82f6; /* Azul premium para viajes */
+  --primary-hover: #60a5fa;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

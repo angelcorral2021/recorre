@@ -1,30 +1,35 @@
 export const languages = {
   es: 'Español',
   en: 'English',
+  pt: 'Português',
 };
 
 export const defaultLang = 'es';
 
 export const ui = {
   es: {
+    'nav.home': 'Inicio',
     'nav.descubre': 'Descubre',
     'nav.planifica': 'Planifica',
     'nav.inspiracion': 'Inspiración',
     'nav.ayuda': 'Ayuda',
-    'nav.home': 'Inicio',
-    'nav.search': 'Buscar',
-    'nav.saved': 'Guardados',
-    'currency.select': 'Moneda',
+    'footer.rights': 'Todos los derechos reservados.',
   },
   en: {
+    'nav.home': 'Home',
     'nav.descubre': 'Discover',
     'nav.planifica': 'Plan',
     'nav.inspiracion': 'Inspiration',
     'nav.ayuda': 'Help',
-    'nav.home': 'Home',
-    'nav.search': 'Search',
-    'nav.saved': 'Saved',
-    'currency.select': 'Currency',
+    'footer.rights': 'All rights reserved.',
+  },
+  pt: {
+    'nav.home': 'Início',
+    'nav.descubre': 'Descubra',
+    'nav.planifica': 'Planejar',
+    'nav.inspiracion': 'Inspiração',
+    'nav.ayuda': 'Ajuda',
+    'footer.rights': 'Todos os direitos reservados.',
   },
 } as const;
 

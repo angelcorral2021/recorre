@@ -1,0 +1,49 @@
+---
+import { getLangFromUrl, useTranslations, ui } from '../../i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Mapeo de idiomas a códigos de país para las banderas (flagcdn)
+const flags = {
+  es: 'es', // España (o 'cl' para Chile)
+  en: 'gb', // Reino Unido
+  pt: 'br'  // Brasil
+};
+---
+
+<nav class="sticky top-0 z-50 w-full backdrop-blur-md bg-[var(--background)]/80 border-b border-[var(--foreground)]/5 transition-colors">
+  <div class="container mx-auto px-4 h-[51px] flex items-center justify-between">
+    <!-- Logo Minimalista -->
+    <a href={`/${lang}`} class="font-light text-sm tracking-[0.2em] uppercase text-[var(--foreground)]">
+      Santiago<span class="opacity-50">Travel</span>
+    </a>
+    
+    <!-- Enlaces Minimalistas -->
+    <div class="hidden md:flex gap-8 items-center text-xs font-light tracking-widest uppercase text-[var(--foreground)]/70">
+      <a href={`/${lang}/descubre`} class="hover:text-[var(--primary)] transition-colors">{t('nav.descubre')}</a>
+      <a href={`/${lang}/planifica`} class="hover:text-[var(--primary)] transition-colors">{t('nav.planifica')}</a>
+      <a href={`/${lang}/inspiracion`} class="hover:text-[var(--primary)] transition-colors">{t('nav.inspiracion')}</a>
+      <a href={`/${lang}/ayuda`} class="hover:text-[var(--primary)] transition-colors">{t('nav.ayuda')}</a>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <!-- Language Selector (Banderas) -->
+      <div class="flex gap-3 items-center">
+        {Object.keys(ui).map((l) => (
+          <a 
+            href={`/${l}`} 
+            class={`block w-5 h-5 rounded-full overflow-hidden border transition-all ${l === lang ? 'border-[var(--primary)] scale-110 opacity-100' : 'border-transparent opacity-50 hover:opacity-100'}`}
+            title={l.toUpperCase()}
+          >
+            <img 
+              src={`https://flagcdn.com/w40/${flags[l as keyof typeof flags]}.png`} 
+              alt={l} 
+              class="w-full h-full object-cover" 
+            />
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</nav>
