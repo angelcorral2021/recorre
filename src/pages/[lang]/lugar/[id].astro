@@ -1,0 +1,281 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { useTranslations } from '../../../i18n/ui';
+import { placesData } from '../../../data/places';
+
+export function getStaticPaths() {
+  const langs = ['es', 'en'];
+  const paths: any[] = [];
+
+  langs.forEach(lang => {
+    Object.keys(placesData).forEach(catId => {
+      const category = placesData[catId];
+      category.places.forEach(place => {
+        paths.push({
+          params: { lang, id: place.id },
+          props: { place, categoryId: catId }
+        });
+      });
+    });
+  });
+
+  return paths;
+}
+
+const { lang } = Astro.params;
+const { place, categoryId } = Astro.props;
+const t = useTranslations(lang as 'es' | 'en');
+const isES = lang === 'es';
+
+const placeName = place.name[lang as 'es'|'en'];
+const placeShortDesc = place.shortDesc[lang as 'es'|'en'];
+const placeLongDesc = place.longDesc[lang as 'es'|'en'];
+const placeTag = place.tag[lang as 'es'|'en'];
+const placeHours = place.hours[lang as 'es'|'en'];
+const placePrice = place.price[lang as 'es'|'en'];
+
+// Text to go back
+const backLinkText = isES ? 'Volver' : 'Back';
+---
+
+<Layout title={`${placeName} | RecorreSantiago`} lang={lang as 'es' | 'en'}>
+
+  <!-- HERO -->
+  <div class="place-hero" style={`background-image: url('${place.img}')`}>
+    <div class="place-hero-overlay"></div>
+    <div class="place-hero-inner">
+      <a href={`/${lang}/${categoryId}`} class="back-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        {backLinkText}
+      </a>
+      <span class="place-tag">{placeTag}</span>
+      <h1>{placeName}</h1>
+      <p class="hero-desc">{placeShortDesc}</p>
+    </div>
+  </div>
+
+  <div class="place-body">
+    <div class="container place-content-wrapper">
+      
+      <div class="main-content">
+        <h2>{isES ? 'Acerca de este lugar' : 'About this place'}</h2>
+        <div class="rich-text">
+          <p>{placeLongDesc}</p>
+        </div>
+      </div>
+
+      <aside class="sidebar">
+        <div class="info-card">
+          <h3>{isES ? 'Información Práctica' : 'Practical Info'}</h3>
+          
+          <div class="info-item">
+            <span class="icon">📍</span>
+            <div>
+              <strong>{isES ? 'Dirección' : 'Address'}</strong>
+              <p>{place.address}</p>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <span class="icon">🕒</span>
+            <div>
+              <strong>{isES ? 'Horarios' : 'Hours'}</strong>
+              <p>{placeHours}</p>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <span class="icon">🎟️</span>
+            <div>
+              <strong>{isES ? 'Precio' : 'Price'}</strong>
+              <p>{placePrice}</p>
+            </div>
+          </div>
+
+          <div class="map-placeholder">
+            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=400" alt="Map View" />
+            <div class="map-overlay">
+              <span>{isES ? 'Ver en mapa' : 'View on map'}</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+</Layout>
+
+<style>
+  /* HERO */
+  .place-hero {
+    min-height: 60vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+  }
+  .place-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(5,10,25,0.95) 0%, rgba(5,10,25,0.3) 70%, transparent 100%);
+  }
+  .place-hero-inner {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 1.5rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: left;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    transition: color 0.3s;
+  }
+  .back-link:hover { color: #ffffff; }
+  .place-tag {
+    display: inline-block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #f43f5e;
+    margin-bottom: 1rem;
+  }
+  .place-hero-inner h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .hero-desc {
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    color: rgba(255,255,255,0.8);
+    max-width: 800px;
+    line-height: 1.6;
+  }
+
+  /* BODY */
+  .place-body {
+    background: var(--bg-color);
+    padding: 5rem 0;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .place-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+  @media (min-width: 900px) {
+    .place-content-wrapper {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  /* MAIN CONTENT */
+  .main-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+  }
+  .rich-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  /* SIDEBAR */
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 0;
+    padding: 2rem;
+  }
+  .info-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.4rem;
+    color: #ffffff;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .info-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .info-item .icon {
+    font-size: 1.5rem;
+  }
+  .info-item strong {
+    display: block;
+    font-family: 'Outfit', sans-serif;
+    color: #ffffff;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+  }
+  .info-item p {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  /* MAP PLACEHOLDER */
+  .map-placeholder {
+    margin-top: 2rem;
+    width: 100%;
+    height: 180px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .map-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(80%) contrast(1.2);
+    transition: filter 0.4s, transform 0.4s;
+  }
+  .map-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(225,29,72,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .map-overlay span {
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: 'Outfit', sans-serif;
+  }
+  .map-placeholder:hover img {
+    filter: grayscale(0%) contrast(1);
+    transform: scale(1.05);
+  }
+  .map-placeholder:hover .map-overlay {
+    opacity: 1;
+  }
+</style>
