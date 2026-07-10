@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { useTranslations } from '../../../i18n/ui';
+import { ayudaData } from '../../../data/ayuda';
 
 export function getStaticPaths() {
   const langs = ['es', 'en'];
@@ -13,91 +14,223 @@ export function getStaticPaths() {
   return langs.flatMap(lang => 
     subcategories.map(sub => ({
       params: { lang, subcategory: sub.id },
-      props: { title: sub[lang as 'es'|'en'] }
+      props: { title: sub[lang as 'es'|'en'], id: sub.id }
     }))
   );
 }
 
 const { lang } = Astro.params;
-const { title } = Astro.props;
+const { title, id } = Astro.props;
 const t = useTranslations(lang as 'es' | 'en');
+const isES = lang === 'es';
+
+// Get the specific data array based on the subcategory ID
+const contentData = ayudaData[id as keyof typeof ayudaData];
 ---
+
 <Layout title={`${title} | Ayuda | RecorreSantiago`} lang={lang as 'es' | 'en'}>
 	<div class="page-header">
 		<div class="container">
+			<a href={`/${lang}/ayuda`} class="back-link">
+				<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+				{isES ? 'Volver a Ayuda' : 'Back to Help'}
+			</a>
 			<h1>{title}</h1>
-			<p>{lang === 'es' ? `Encuentra todo sobre ${title.toLowerCase()}.` : `Find everything about ${title.toLowerCase()}.`}</p>
+			<p>{isES ? `Encuentra todo sobre ${title.toLowerCase()}.` : `Find everything about ${title.toLowerCase()}.`}</p>
 		</div>
 	</div>
 
 	<section class="content-section">
 		<div class="container">
-			<div class="placeholder-content">
-				<p>{lang === 'es' ? 'El contenido de esta sección se generará dinámicamente desde el CMS pronto.' : 'The content for this section will be generated dynamically from the CMS soon.'}</p>
-				<a href={`/${lang}/ayuda`} class="btn btn-outline">{lang === 'es' ? 'Volver a Ayuda' : 'Back to Help'}</a>
-			</div>
+			
+			{/* Render Information or Security Cards */}
+			{(id === 'info-util' || id === 'seguridad') && (
+				<div class="cards-grid">
+					{(contentData as any[]).map((item) => (
+						<article class="info-card">
+							<div class="card-icon">{item.icon}</div>
+							<h3>{item.title[lang as 'es' | 'en']}</h3>
+							<p>{item.desc[lang as 'es' | 'en']}</p>
+						</article>
+					))}
+				</div>
+			)}
+
+			{/* Render FAQs as Accordion */}
+			{id === 'faqs' && (
+				<div class="faq-list">
+					{(contentData as any[]).map((faq) => (
+						<details class="faq-item">
+							<summary class="faq-question">
+								{faq.q[lang as 'es' | 'en']}
+								<span class="faq-icon">+</span>
+							</summary>
+							<div class="faq-answer">
+								<p>{faq.a[lang as 'es' | 'en']}</p>
+							</div>
+						</details>
+					))}
+				</div>
+			)}
+
 		</div>
 	</section>
 </Layout>
 
 <style>
+	/* HEADER */
 	.page-header {
-		background: linear-gradient(135deg, #475569, #1E293B);
-		color: white;
-		padding: 5rem 1.5rem 3rem;
+		background: var(--surface-color);
+		color: var(--text-color);
+		padding: 5rem 1.5rem 4rem;
 		text-align: center;
+		border-bottom: 1px solid var(--border-color);
 	}
 	
+	.back-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: var(--text-muted);
+		text-decoration: none;
+		font-size: 0.95rem;
+		font-weight: 500;
+		margin-bottom: 2rem;
+		transition: color 0.3s;
+	}
+	.back-link:hover { color: var(--text-color); }
+
 	.page-header h1 {
-		font-size: clamp(2rem, 4vw, 3.5rem);
-		font-weight: 700;
+		font-family: 'Playfair Display', serif;
+		font-size: clamp(2.5rem, 5vw, 4rem);
+		font-weight: 900;
 		margin-bottom: 1rem;
 	}
 	
 	.page-header p {
-		font-size: 1.125rem;
-		opacity: 0.9;
+		font-size: 1.15rem;
+		color: var(--text-muted);
 		max-width: 600px;
 		margin: 0 auto;
 	}
 
 	.container {
-		max-width: 1280px;
+		max-width: 1000px;
 		margin: 0 auto;
 		padding: 0 1.5rem;
 	}
 
 	.content-section {
 		padding: 5rem 0;
+		background: var(--bg-color);
+		min-height: 50vh;
 	}
 
-	.placeholder-content {
-		text-align: center;
-		padding: 4rem;
-		background: var(--surface-color);
-		border-radius: 20px;
-		border: 1px dashed var(--border-color);
+	/* CARDS GRID (INFO & SECURITY) */
+	.cards-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 2rem;
+	}
+	
+	.info-card {
+		background: rgba(255, 255, 255, 0.02);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 0;
+		padding: 2.5rem 2rem;
+		transition: transform 0.3s, border-color 0.3s;
+	}
+	.info-card:hover {
+		transform: translateY(-5px);
+		border-color: rgba(225, 29, 72, 0.5); /* Rose-600 */
 	}
 
-	.placeholder-content p {
-		font-size: 1.25rem;
-		color: var(--text-secondary);
-		margin-bottom: 2rem;
+	.card-icon {
+		font-size: 3rem;
+		margin-bottom: 1.5rem;
+		background: rgba(255, 255, 255, 0.05);
+		width: 70px;
+		height: 70px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
-	.btn-outline {
-		display: inline-block;
-		padding: 0.75rem 1.5rem;
-		border-radius: 999px;
+	.info-card h3 {
+		font-family: 'Outfit', sans-serif;
+		font-size: 1.4rem;
+		color: #ffffff;
+		margin-bottom: 1rem;
+	}
+
+	.info-card p {
+		font-size: 1.05rem;
+		color: rgba(255, 255, 255, 0.7);
+		line-height: 1.6;
+	}
+
+	/* FAQ ACCORDION */
+	.faq-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.faq-item {
+		background: rgba(255, 255, 255, 0.02);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 0;
+		overflow: hidden;
+	}
+
+	.faq-question {
+		padding: 1.5rem 2rem;
+		font-family: 'Outfit', sans-serif;
+		font-size: 1.2rem;
 		font-weight: 600;
-		text-decoration: none;
-		color: #475569;
-		border: 2px solid #475569;
-		transition: all 0.3s ease;
+		color: #ffffff;
+		cursor: pointer;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		list-style: none; /* Hide default arrow */
+	}
+	/* Safari specific to hide arrow */
+	.faq-question::-webkit-details-marker { display: none; }
+
+	.faq-question:hover {
+		background: rgba(255, 255, 255, 0.04);
 	}
 
-	.btn-outline:hover {
-		background: #475569;
-		color: white;
+	.faq-icon {
+		font-size: 1.5rem;
+		font-weight: 300;
+		transition: transform 0.3s ease;
+		color: #e11d48;
+	}
+
+	details[open] .faq-icon {
+		transform: rotate(45deg); /* Turn + into x */
+	}
+
+	.faq-answer {
+		padding: 0 2rem 2rem 2rem;
+		font-size: 1.05rem;
+		color: rgba(255, 255, 255, 0.7);
+		line-height: 1.6;
+		border-top: 1px solid transparent;
+		animation: slideDown 0.3s ease-out;
+	}
+	
+	details[open] .faq-answer {
+		border-top-color: rgba(255, 255, 255, 0.05);
+		padding-top: 1.5rem;
+	}
+
+	@keyframes slideDown {
+		from { opacity: 0; transform: translateY(-10px); }
+		to { opacity: 1; transform: translateY(0); }
 	}
 </style>
