@@ -36,6 +36,17 @@ const placeTag = loc(place.tag);
 const placeHours = loc(place.hours);
 const placePrice = loc(place.price);
 
+const carouselImages = [
+  "https://picsum.photos/seed/stgo1/800/600",
+  "https://picsum.photos/seed/stgo2/800/600",
+  "https://picsum.photos/seed/stgo3/800/600",
+  "https://picsum.photos/seed/stgo4/800/600",
+  "https://picsum.photos/seed/stgo5/800/600",
+  "https://picsum.photos/seed/stgo6/800/600",
+  "https://picsum.photos/seed/stgo7/800/600",
+  "https://picsum.photos/seed/stgo8/800/600"
+];
+
 // Text to go back
 const backLinkText = { es: 'Volver', en: 'Back', pt: 'Voltar' }[lang as string] || 'Back';
 const t_about = { es: 'Acerca de este lugar', en: 'About this place', pt: 'Sobre este lugar' }[lang as string] || 'About this place';
@@ -115,6 +126,37 @@ const t_map = { es: 'Ver en mapa', en: 'View on map', pt: 'Ver no mapa' }[lang a
       </aside>
 
     </div>
+
+    <!-- CAROUSEL SECTION -->
+    <div class="carousel-section container">
+      <div class="carousel-header">
+        <h2>{isES ? 'Galería' : lang === 'pt' ? 'Galeria' : 'Gallery'}</h2>
+        <div class="carousel-controls">
+          <button class="carousel-btn prev-btn" aria-label="Previous image">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button class="carousel-btn next-btn" aria-label="Next image">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="carousel-container">
+        <div class="carousel-track">
+          {carouselImages.map((imgUrl, i) => (
+            <div class="carousel-slide">
+              <img src={imgUrl} alt={`Gallery image ${i + 1}`} loading="lazy" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox">
+    <button class="lightbox-close" aria-label="Close">&times;</button>
+    <img class="lightbox-img" src="" alt="Enlarged view" />
   </div>
 
 </Layout>
@@ -262,4 +304,186 @@ const t_map = { es: 'Ver en mapa', en: 'View on map', pt: 'Ver no mapa' }[lang a
     overflow: hidden;
     border: 1px solid rgba(255,255,255,0.1);
   }
+
+  /* CAROUSEL */
+  .carousel-section {
+    margin-top: 5rem;
+    padding-top: 4rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  .carousel-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--text-color);
+  }
+  .carousel-controls {
+    display: flex;
+    gap: 1rem;
+  }
+  .carousel-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .carousel-btn:hover {
+    background: var(--primary-color, #e11d48);
+    transform: scale(1.1);
+    border-color: var(--primary-color, #e11d48);
+  }
+  .carousel-container {
+    width: 100%;
+    overflow: hidden;
+  }
+  .carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem;
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+  .carousel-slide {
+    flex: 0 0 calc(100% - 2rem);
+    height: 300px;
+    scroll-snap-align: center;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  @media (min-width: 600px) {
+    .carousel-slide { flex: 0 0 calc(50% - 1rem); }
+  }
+  @media (min-width: 900px) {
+    /* 6 imágenes simultáneas */
+    .carousel-slide { flex: 0 0 calc(16.666% - 1.25rem); height: 180px; }
+  }
+  .carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    cursor: zoom-in;
+  }
+  .carousel-slide:hover img {
+    transform: scale(1.05);
+  }
+
+  /* LIGHTBOX */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+  }
+  .lightbox.active .lightbox-img {
+    transform: scale(1);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 3rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.3s;
+  }
+  .lightbox-close:hover {
+    color: #f43f5e;
+  }
 </style>
+
+<script>
+  // Simple Carousel Script
+  const initCarousel = () => {
+    const track = document.querySelector('.carousel-track');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+
+    if (track && prevBtn && nextBtn) {
+      const scrollAmount = () => track.clientWidth / 2;
+
+      prevBtn.addEventListener('click', () => {
+        track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+      });
+
+      nextBtn.addEventListener('click', () => {
+        track.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+      });
+    }
+
+    // Lightbox Logic
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = lightbox?.querySelector('.lightbox-img') as HTMLImageElement;
+    const closeBtn = lightbox?.querySelector('.lightbox-close');
+    const images = document.querySelectorAll('.carousel-slide img');
+
+    if (lightbox && lightboxImg && closeBtn) {
+      images.forEach(img => {
+        img.addEventListener('click', () => {
+          lightboxImg.src = (img as HTMLImageElement).src;
+          lightbox.classList.add('active');
+        });
+      });
+
+      const closeLightbox = () => {
+        lightbox.classList.remove('active');
+        setTimeout(() => { lightboxImg.src = ''; }, 300); // clear after transition
+      };
+
+      closeBtn.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+          closeLightbox();
+        }
+      });
+    }
+  };
+
+  // Run on load
+  initCarousel();
+</script>
