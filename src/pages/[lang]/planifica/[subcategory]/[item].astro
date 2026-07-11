@@ -27,11 +27,13 @@ const content = loc(item.content);
 <Layout title={`${title} | RecorreSantiago`} lang={lang as 'es' | 'en'}>
   
   <div class="page-hero" style={`background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)), url('${category.heroImg}')`}>
-    <div class="container hero-content">
+    <div class="container hero-top">
       <a href={`/${lang}/planifica/${subcategory}`} class="back-link">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         {lang === 'es' ? 'Volver atrás' : lang === 'pt' ? 'Voltar' : 'Go back'}
       </a>
+    </div>
+    <div class="container hero-content">
       <h1>{title}</h1>
       <p>{loc(item.desc)}</p>
     </div>
@@ -46,14 +48,23 @@ const content = loc(item.content);
 <style>
   /* HERO */
   .page-hero {
-    min-height: 20vh;
+    min-height: 12vh;
     background-size: cover;
     background-position: center;
     display: flex;
     align-items: center;
     position: relative;
-    padding-bottom: 1.5rem;
-    padding-top: 4rem;
+    padding-bottom: 1rem;
+    padding-top: 5rem;
+  }
+  .hero-top {
+    position: absolute;
+    top: 6rem; /* A bit below the transparent navbar */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1200px;
+    z-index: 10;
   }
   .hero-content {
     position: relative;
@@ -72,9 +83,11 @@ const content = loc(item.content);
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     font-weight: 500;
-    margin-bottom: 2.5rem;
     transition: color 0.3s;
-    align-self: flex-start;
+    background: rgba(0,0,0,0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
   .back-link:hover {
     color: white;
