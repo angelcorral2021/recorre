@@ -326,8 +326,17 @@ const t_map = { es: 'Ver en mapa', en: 'View on map', pt: 'Ver no mapa' }[lang a
   /* CAROUSEL */
   .carousel-section {
     margin-top: 5rem;
-    padding-top: 4rem;
-    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 2rem 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+  }
+  @media (min-width: 768px) {
+    .carousel-section {
+      padding: 3rem;
+    }
   }
   .carousel-header {
     display: flex;
