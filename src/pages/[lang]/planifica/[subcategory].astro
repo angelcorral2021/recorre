@@ -45,11 +45,12 @@ const loc = (obj: any) => obj?.[lang as keyof typeof obj] || obj?.en || '';
           <h2>{loc(section.title)}</h2>
           <div class="cards-grid">
             {section.items.map(item => (
-              <div class="info-card">
+              <a href={`/${lang}/planifica/${subcategory}/${item.slug}`} class="info-card">
                 <div class="card-icon" set:html={item.icon} />
                 <h3>{loc(item.title)}</h3>
                 <p>{loc(item.desc)}</p>
-              </div>
+                <span class="read-more">{lang === 'es' ? 'Leer más →' : lang === 'pt' ? 'Leia mais →' : 'Read more →'}</span>
+              </a>
             ))}
           </div>
         </div>
@@ -134,6 +135,7 @@ const loc = (obj: any) => obj?.[lang as keyof typeof obj] || obj?.en || '';
     gap: 2rem;
   }
   .info-card {
+    text-decoration: none;
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -162,5 +164,16 @@ const loc = (obj: any) => obj?.[lang as keyof typeof obj] || obj?.en || '';
     color: rgba(255,255,255,0.7);
     line-height: 1.6;
     font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .read-more {
+    margin-top: auto;
+    font-size: 0.95rem;
+    color: #e11d48;
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+  .info-card:hover .read-more {
+    color: #f43f5e;
   }
 </style>
