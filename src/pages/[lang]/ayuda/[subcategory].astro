@@ -50,7 +50,7 @@ const contentData = ayudaData[id as keyof typeof ayudaData];
 				<div class="cards-grid">
 					{(contentData as any[]).map((item) => (
 						<article class="info-card">
-							<div class="card-icon">{item.icon}</div>
+							<div class="card-icon" set:html={item.icon} />
 							<h3>{loc(item.title)}</h3>
 							<p>{loc(item.desc)}</p>
 						</article>

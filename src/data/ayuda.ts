@@ -18,7 +18,7 @@ export interface AyudaData {
 export const ayudaData: AyudaData = {
   'info-util': [
     {
-      icon: '💵',
+      icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="8" y="12" width="32" height="24" fill="#005B9F"/><circle cx="24" cy="24" r="8" fill="#F2B705"/><rect x="12" y="16" width="6" height="4" fill="#E03C31"/></svg>',
       title: { es: 'Moneda Oficial', en: 'Official Currency' },
       desc: {
         es: 'La moneda oficial es el Peso Chileno (CLP). Las tarjetas de crédito y débito (Visa, Mastercard) son ampliamente aceptadas en casi todos los comercios mediante el sistema "Transbank" o pago sin contacto. Aún así, es útil tener algo de efectivo para ferias libres o propinas.',
@@ -26,7 +26,7 @@ export const ayudaData: AyudaData = {
       }
     },
     {
-      icon: '🚇',
+      icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="12" y="8" width="24" height="32" fill="#005B9F"/><polygon points="24,8 36,24 12,24" fill="#F2B705"/></svg>',
       title: { es: 'Transporte Público (Tarjeta Bip!)', en: 'Public Transport (Bip! Card)' },
       desc: {
         es: 'Para usar el Metro de Santiago y los buses públicos (Red) necesitas una "Tarjeta Bip!". Se puede comprar y recargar en cualquier estación de Metro. Alternativamente, puedes pagar directamente escaneando un código QR con la app oficial de Red Movilidad.',
@@ -34,7 +34,7 @@ export const ayudaData: AyudaData = {
       }
     },
     {
-      icon: '☀️',
+      icon: '<svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="12" fill="#F2B705"/><polygon points="24,4 28,10 20,10" fill="#E03C31"/><polygon points="24,44 28,38 20,38" fill="#E03C31"/><polygon points="4,24 10,20 10,28" fill="#005B9F"/><polygon points="44,24 38,20 38,28" fill="#005B9F"/></svg>',
       title: { es: 'Clima y Estaciones', en: 'Weather & Seasons' },
       desc: {
         es: 'Santiago tiene un clima mediterráneo. Los veranos (Dic-Mar) son calurosos y secos (hasta 35°C). Los inviernos (Jun-Sep) son fríos (0°C a 15°C) y es cuando suele llover. La primavera y el otoño son las mejores épocas para visitar con un clima muy agradable.',
@@ -42,7 +42,7 @@ export const ayudaData: AyudaData = {
       }
     },
     {
-      icon: '🔌',
+      icon: '<svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="#005B9F"/><circle cx="18" cy="24" r="4" fill="#F2B705"/><circle cx="30" cy="24" r="4" fill="#F2B705"/><rect x="22" y="8" width="4" height="8" fill="#E03C31"/></svg>',
       title: { es: 'Voltaje y Enchufes', en: 'Voltage & Plugs' },
       desc: {
         es: 'El voltaje en Chile es de 220V. Los enchufes utilizan clavijas tipo C (dos redondas, estilo europeo) o tipo L (tres redondas en línea). Se recomienda traer un adaptador universal si tus equipos usan 110V o enchufes planos.',
@@ -50,7 +50,7 @@ export const ayudaData: AyudaData = {
       }
     },
     {
-      icon: '🌐',
+      icon: '<svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="40" r="4" fill="#E03C31"/><path d="M 16 32 Q 24 24 32 32" fill="none" stroke="#F2B705" stroke-width="4"/><path d="M 8 24 Q 24 8 40 24" fill="none" stroke="#005B9F" stroke-width="4"/></svg>',
       title: { es: 'Conectividad y WiFi', en: 'Connectivity & WiFi' },
       desc: {
         es: 'El internet en Chile es uno de los más rápidos del mundo. Encontrarás WiFi gratuito en aeropuertos, centros comerciales y cafés. Si necesitas datos móviles, puedes comprar un chip (SIM card) prepago en cualquier kiosco o farmacia (Entel, WOM, Claro, Movistar).',
@@ -61,7 +61,7 @@ export const ayudaData: AyudaData = {
   
   'seguridad': [
     {
-      icon: '🚨',
+      icon: '<svg width="48" height="48" viewBox="0 0 48 48"><polygon points="24,8 40,40 8,40" fill="#E03C31"/><rect x="22" y="20" width="4" height="12" fill="#FFFFFF"/><circle cx="24" cy="36" r="2" fill="#FFFFFF"/></svg>',
       title: { es: 'Números de Emergencia', en: 'Emergency Numbers' },
       desc: {
         es: 'Memoriza el "ABC" de las emergencias en Chile: 131 para Ambulancia (SAMU), 132 para Bomberos, y 133 para Carabineros (Policía).',
@@ -69,7 +69,7 @@ export const ayudaData: AyudaData = {
       }
     },
     {
-      icon: '👁️',
+      icon: '<svg width="48" height="48" viewBox="0 0 48 48"><path d="M 4 24 Q 24 4 44 24 Q 24 44 4 24" fill="#005B9F"/><circle cx="24" cy="24" r="8" fill="#F2B705"/><circle cx="24" cy="24" r="4" fill="#E03C31"/></svg>',
       title: { es: 'Precauciones Generales', en: 'General Precautions' },
       desc: {
         es: 'Santiago es relativamente segura, pero como en toda gran capital, debes estar atento a los carteristas ("lanzazos") en lugares concurridos como el transporte público o mercados. No uses el celular cerca de las puertas del Metro y mantén tu mochila a la vista.',
@@ -77,7 +77,7 @@ export const ayudaData: AyudaData = {
       }
     },
     {
-      icon: '🗺️',
+      icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="8" y="12" width="10" height="24" fill="#005B9F"/><rect x="18" y="8" width="12" height="24" fill="#F2B705"/><rect x="30" y="16" width="10" height="24" fill="#E03C31"/></svg>',
       title: { es: 'Zonas Recomendadas', en: 'Recommended Areas' },
       desc: {
         es: 'Los barrios turísticos como Providencia, Las Condes, Vitacura y el sector de Lastarria/Bellas Artes son muy seguros para caminar. Durante la noche, se recomienda moverse en taxis de aplicaciones (Uber, Cabify) si te alejas de estas zonas.',
@@ -85,7 +85,7 @@ export const ayudaData: AyudaData = {
       }
     },
     {
-      icon: '🚖',
+      icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="8" y="20" width="32" height="12" fill="#F2B705"/><rect x="16" y="12" width="16" height="8" fill="#E03C31"/><circle cx="16" cy="36" r="4" fill="#005B9F"/><circle cx="32" cy="36" r="4" fill="#005B9F"/></svg>',
       title: { es: 'Transporte Seguro', en: 'Safe Transportation' },
       desc: {
         es: 'Desde el aeropuerto, usa siempre el transporte oficial (buses Centropuerto/Turbus) o taxis autorizados en los counters del interior. Evita a las personas que ofrecen transporte informal en las puertas de salida.',
