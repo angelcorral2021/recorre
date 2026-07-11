@@ -4,17 +4,17 @@ import { useTranslations } from '../../../i18n/ui';
 import { ayudaData } from '../../../data/ayuda';
 
 export function getStaticPaths() {
-  const langs = ['es', 'en'];
+  const langs = ['es', 'en', 'pt'];
   const subcategories = [
-    { id: 'info-util', es: 'Información útil', en: 'Useful info' },
-    { id: 'seguridad', es: 'Seguridad', en: 'Security' },
-    { id: 'faqs', es: 'Preguntas Frecuentes', en: 'FAQs' },
+    { id: 'info-util', es: 'Información útil', en: 'Useful info', pt: 'Informação útil' },
+    { id: 'seguridad', es: 'Seguridad', en: 'Security', pt: 'Segurança' },
+    { id: 'faqs', es: 'Preguntas Frecuentes', en: 'FAQs', pt: 'FAQs' },
   ];
 
   return langs.flatMap(lang => 
     subcategories.map(sub => ({
       params: { lang, subcategory: sub.id },
-      props: { title: sub[lang as 'es'|'en'], id: sub.id }
+      props: { title: sub[lang as 'es'|'en'|'pt'], id: sub.id }
     }))
   );
 }
@@ -23,6 +23,8 @@ const { lang } = Astro.params;
 const { title, id } = Astro.props;
 const t = useTranslations(lang as 'es' | 'en');
 const isES = lang === 'es';
+
+const loc = (obj: any) => obj?.[lang as keyof typeof obj] || obj?.en || '';
 
 // Get the specific data array based on the subcategory ID
 const contentData = ayudaData[id as keyof typeof ayudaData];
@@ -49,8 +51,8 @@ const contentData = ayudaData[id as keyof typeof ayudaData];
 					{(contentData as any[]).map((item) => (
 						<article class="info-card">
 							<div class="card-icon">{item.icon}</div>
-							<h3>{item.title[lang as 'es' | 'en']}</h3>
-							<p>{item.desc[lang as 'es' | 'en']}</p>
+							<h3>{loc(item.title)}</h3>
+							<p>{loc(item.desc)}</p>
 						</article>
 					))}
 				</div>
@@ -62,11 +64,11 @@ const contentData = ayudaData[id as keyof typeof ayudaData];
 					{(contentData as any[]).map((faq) => (
 						<details class="faq-item">
 							<summary class="faq-question">
-								{faq.q[lang as 'es' | 'en']}
+								{loc(faq.q)}
 								<span class="faq-icon">+</span>
 							</summary>
 							<div class="faq-answer">
-								<p>{faq.a[lang as 'es' | 'en']}</p>
+								<p>{loc(faq.a)}</p>
 							</div>
 						</details>
 					))}

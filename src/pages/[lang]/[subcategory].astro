@@ -4,12 +4,12 @@ import { useTranslations } from '../../i18n/ui';
 import { placesData } from '../../data/places';
 
 export function getStaticPaths() {
-  const langs = ['es', 'en'];
+  const langs = ['es', 'en', 'pt'];
   const subcategories = [
-    { id: 'arte-cultura', es: 'Arte y Cultura', en: 'Art & Culture' },
-    { id: 'gastronomia', es: 'Gastronomía', en: 'Gastronomy' },
-    { id: 'naturaleza-aventura', es: 'Naturaleza y Aventura', en: 'Nature & Adventure' },
-    { id: 'ocio-vida-nocturna', es: 'Ocio y Vida Nocturna', en: 'Leisure & Nightlife' },
+    { id: 'arte-cultura', es: 'Arte y Cultura', en: 'Art & Culture', pt: 'Arte e Cultura' },
+    { id: 'gastronomia', es: 'Gastronomía', en: 'Gastronomy', pt: 'Gastronomia' },
+    { id: 'naturaleza-aventura', es: 'Naturaleza y Aventura', en: 'Nature & Adventure', pt: 'Natureza e Aventura' },
+    { id: 'ocio-vida-nocturna', es: 'Ocio y Vida Nocturna', en: 'Leisure & Nightlife', pt: 'Lazer e Vida Noturna' },
   ];
   return langs.flatMap(lang =>
     subcategories.map(sub => ({
@@ -23,6 +23,8 @@ const { lang, subcategory: id } = Astro.params;
 const { title } = Astro.props;
 const t = useTranslations(lang as 'es' | 'en');
 const isES = lang === 'es';
+
+const loc = (obj: any) => obj?.[lang as keyof typeof obj] || obj?.en || '';
 
 const pageData = placesData[id];
 
@@ -57,10 +59,10 @@ const ctaDesc = {
     <div class="cat-hero-inner">
       <a href={`/${lang}/`} class="back-link">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        {isES ? 'Descubre' : 'Discover'}
+        {{es: 'Descubre', en: 'Discover', pt: 'Descubra'}[lang as string] || 'Discover'}
       </a>
       <h1>{title}</h1>
-      <p>{pageData.hero.subtitle[lang as 'es' | 'en']}</p>
+      <p>{loc(pageData.hero.subtitle)}</p>
     </div>
   </div>
 
@@ -70,19 +72,19 @@ const ctaDesc = {
       <!-- HIGHLIGHTS -->
       <section class="section container">
         <div class="section-head">
-          <h2>{isES ? 'Lugares imprescindibles' : 'Must-see places'}</h2>
+          <h2>{{es: 'Lugares imprescindibles', en: 'Must-see places', pt: 'Lugares imperdíveis'}[lang as string] || 'Must-see places'}</h2>
           <p>{sectionSubtitle}</p>
         </div>
         <div class="cards-grid">
           {pageData.places.map(place => (
             <a href={`/${lang}/lugar/${place.id}`} class="place-card">
               <div class="place-img-wrap">
-                <img src={place.img} alt={place.name[lang as 'es' | 'en']} loading="lazy" />
+                <img src={place.img} alt={loc(place.name)} loading="lazy" />
               </div>
               <div class="place-info">
-                <span class="place-tag">{place.tag[lang as 'es' | 'en']}</span>
-                <h3>{place.name[lang as 'es' | 'en']}</h3>
-                <p>{place.shortDesc[lang as 'es' | 'en']}</p>
+                <span class="place-tag">{loc(place.tag)}</span>
+                <h3>{loc(place.name)}</h3>
+                <p>{loc(place.shortDesc)}</p>
               </div>
             </a>
           ))}
@@ -182,8 +184,10 @@ const ctaDesc = {
     gap: 2rem;
   }
   .place-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 0;
     overflow: hidden;
     position: relative;

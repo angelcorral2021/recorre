@@ -4,7 +4,7 @@ import { useTranslations } from '../../../i18n/ui';
 import { placesData } from '../../../data/places';
 
 export function getStaticPaths() {
-  const langs = ['es', 'en'];
+  const langs = ['es', 'en', 'pt'];
   const paths: any[] = [];
 
   langs.forEach(lang => {
@@ -27,15 +27,23 @@ const { place, categoryId } = Astro.props;
 const t = useTranslations(lang as 'es' | 'en');
 const isES = lang === 'es';
 
-const placeName = place.name[lang as 'es'|'en'];
-const placeShortDesc = place.shortDesc[lang as 'es'|'en'];
-const placeLongDesc = place.longDesc[lang as 'es'|'en'];
-const placeTag = place.tag[lang as 'es'|'en'];
-const placeHours = place.hours[lang as 'es'|'en'];
-const placePrice = place.price[lang as 'es'|'en'];
+const loc = (obj: any) => obj?.[lang as keyof typeof obj] || obj?.en || '';
+
+const placeName = loc(place.name);
+const placeShortDesc = loc(place.shortDesc);
+const placeLongDesc = loc(place.longDesc);
+const placeTag = loc(place.tag);
+const placeHours = loc(place.hours);
+const placePrice = loc(place.price);
 
 // Text to go back
-const backLinkText = isES ? 'Volver' : 'Back';
+const backLinkText = { es: 'Volver', en: 'Back', pt: 'Voltar' }[lang as string] || 'Back';
+const t_about = { es: 'Acerca de este lugar', en: 'About this place', pt: 'Sobre este lugar' }[lang as string] || 'About this place';
+const t_practical = { es: 'Información Práctica', en: 'Practical Info', pt: 'Informações Práticas' }[lang as string] || 'Practical Info';
+const t_address = { es: 'Dirección', en: 'Address', pt: 'Endereço' }[lang as string] || 'Address';
+const t_hours = { es: 'Horarios', en: 'Hours', pt: 'Horários' }[lang as string] || 'Hours';
+const t_price = { es: 'Precio', en: 'Price', pt: 'Preço' }[lang as string] || 'Price';
+const t_map = { es: 'Ver en mapa', en: 'View on map', pt: 'Ver no mapa' }[lang as string] || 'View on map';
 ---
 
 <Layout title={`${placeName} | RecorreSantiago`} lang={lang as 'es' | 'en'}>
@@ -58,7 +66,7 @@ const backLinkText = isES ? 'Volver' : 'Back';
     <div class="container place-content-wrapper">
       
       <div class="main-content">
-        <h2>{isES ? 'Acerca de este lugar' : 'About this place'}</h2>
+        <h2>{t_about}</h2>
         <div class="rich-text">
           <p>{placeLongDesc}</p>
         </div>
@@ -66,12 +74,12 @@ const backLinkText = isES ? 'Volver' : 'Back';
 
       <aside class="sidebar">
         <div class="info-card">
-          <h3>{isES ? 'Información Práctica' : 'Practical Info'}</h3>
+          <h3>{t_practical}</h3>
           
           <div class="info-item">
             <span class="icon">📍</span>
             <div>
-              <strong>{isES ? 'Dirección' : 'Address'}</strong>
+              <strong>{t_address}</strong>
               <p>{place.address}</p>
             </div>
           </div>
@@ -79,7 +87,7 @@ const backLinkText = isES ? 'Volver' : 'Back';
           <div class="info-item">
             <span class="icon">🕒</span>
             <div>
-              <strong>{isES ? 'Horarios' : 'Hours'}</strong>
+              <strong>{t_hours}</strong>
               <p>{placeHours}</p>
             </div>
           </div>
@@ -87,7 +95,7 @@ const backLinkText = isES ? 'Volver' : 'Back';
           <div class="info-item">
             <span class="icon">🎟️</span>
             <div>
-              <strong>{isES ? 'Precio' : 'Price'}</strong>
+              <strong>{t_price}</strong>
               <p>{placePrice}</p>
             </div>
           </div>
@@ -95,7 +103,7 @@ const backLinkText = isES ? 'Volver' : 'Back';
           <div class="map-placeholder">
             <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=400" alt="Map View" />
             <div class="map-overlay">
-              <span>{isES ? 'Ver en mapa' : 'View on map'}</span>
+              <span>{t_map}</span>
             </div>
           </div>
         </div>

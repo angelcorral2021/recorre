@@ -3,18 +3,18 @@ import Layout from '../../../layouts/Layout.astro';
 import { useTranslations } from '../../../i18n/ui';
 
 export function getStaticPaths() {
-  const langs = ['es', 'en'];
+  const langs = ['es', 'en', 'pt'];
   const subcategories = [
-    { id: 'como-llegar', es: 'Cómo llegar', en: 'How to get there' },
-    { id: 'donde-alojar', es: 'Dónde alojar', en: 'Where to stay' },
-    { id: 'itinerarios', es: 'Itinerarios', en: 'Itineraries' },
-    { id: 'consejos', es: 'Consejos prácticos', en: 'Practical tips' },
+    { id: 'como-llegar', es: 'Cómo llegar', en: 'How to get there', pt: 'Como chegar' },
+    { id: 'donde-alojar', es: 'Dónde alojar', en: 'Where to stay', pt: 'Onde ficar' },
+    { id: 'itinerarios', es: 'Itinerarios', en: 'Itineraries', pt: 'Itinerários' },
+    { id: 'consejos', es: 'Consejos prácticos', en: 'Practical tips', pt: 'Dicas práticas' },
   ];
 
   return langs.flatMap(lang => 
     subcategories.map(sub => ({
       params: { lang, subcategory: sub.id },
-      props: { title: sub[lang as 'es'|'en'] }
+      props: { title: sub[lang as 'es'|'en'|'pt'] }
     }))
   );
 }

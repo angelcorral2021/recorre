@@ -3,17 +3,17 @@ import Layout from '../../../layouts/Layout.astro';
 import { useTranslations } from '../../../i18n/ui';
 
 export function getStaticPaths() {
-  const langs = ['es', 'en'];
+  const langs = ['es', 'en', 'pt'];
   const subcategories = [
-    { id: 'guias', es: 'Guías', en: 'Guides' },
-    { id: 'experiencias', es: 'Experiencias', en: 'Experiences' },
-    { id: 'historias', es: 'Historias', en: 'Stories' },
+    { id: 'guias', es: 'Guías', en: 'Guides', pt: 'Guias' },
+    { id: 'experiencias', es: 'Experiencias', en: 'Experiences', pt: 'Experiências' },
+    { id: 'historias', es: 'Historias', en: 'Stories', pt: 'Histórias' },
   ];
 
   return langs.flatMap(lang => 
     subcategories.map(sub => ({
       params: { lang, subcategory: sub.id },
-      props: { title: sub[lang as 'es'|'en'] }
+      props: { title: sub[lang as 'es'|'en'|'pt'] }
     }))
   );
 }
