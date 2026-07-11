@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { useTranslations } from '../../../i18n/ui';
+import { planificaData } from '../../../data/planifica';
 
 export function getStaticPaths() {
   const langs = ['es', 'en', 'pt'];
@@ -19,86 +20,148 @@ export function getStaticPaths() {
   );
 }
 
-const { lang } = Astro.params;
+const { lang, subcategory } = Astro.params;
 const { title } = Astro.props;
-const t = useTranslations(lang as 'es' | 'en');
+
+const categoryData = planificaData.find(c => c.id === subcategory);
+const loc = (obj: any) => obj?.[lang as keyof typeof obj] || obj?.en || '';
 ---
 <Layout title={`${title} | Planifica | RecorreSantiago`} lang={lang as 'es' | 'en'}>
-	<div class="page-header">
-		<div class="container">
-			<h1>{title}</h1>
-			<p>{lang === 'es' ? `Toda la información sobre ${title.toLowerCase()} para tu viaje.` : `All the information about ${title.toLowerCase()} for your trip.`}</p>
-		</div>
-	</div>
+  
+  <div class="page-hero" style={`background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8)), url('${categoryData?.heroImg}')`}>
+    <div class="container hero-content">
+      <a href={`/${lang}/planifica`} class="back-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        {lang === 'es' ? 'Volver a Planifica' : lang === 'pt' ? 'Voltar para Planificar' : 'Back to Plan'}
+      </a>
+      <h1>{title}</h1>
+      <p>{lang === 'es' ? `Toda la información clave sobre ${title.toLowerCase()} para tu viaje a Santiago.` : lang === 'pt' ? `Todas as informações principais sobre ${title.toLowerCase()} para a sua viagem a Santiago.` : `All key information about ${title.toLowerCase()} for your trip to Santiago.`}</p>
+    </div>
+  </div>
 
-	<section class="content-section">
-		<div class="container">
-			<div class="placeholder-content">
-				<p>{lang === 'es' ? 'El contenido de esta sección se generará dinámicamente desde el CMS pronto.' : 'The content for this section will be generated dynamically from the CMS soon.'}</p>
-				<a href={`/${lang}/planifica`} class="btn btn-outline">{lang === 'es' ? 'Volver a Planifica' : 'Back to Plan'}</a>
-			</div>
-		</div>
-	</section>
+  <section class="content-section">
+    <div class="container content-grid">
+      {categoryData?.sections.map(section => (
+        <div class="info-section">
+          <h2>{loc(section.title)}</h2>
+          <div class="cards-grid">
+            {section.items.map(item => (
+              <div class="info-card">
+                <div class="card-icon">{item.icon}</div>
+                <h3>{loc(item.title)}</h3>
+                <p>{loc(item.desc)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
 </Layout>
 
 <style>
-	.page-header {
-		background: linear-gradient(135deg, var(--color-secondary), #0369A1);
-		color: white;
-		padding: 5rem 2.5rem 3rem;
-		text-align: center;
-	}
-	
-	.page-header h1 {
-		font-size: clamp(2rem, 4vw, 3.5rem);
-		font-weight: 700;
-		margin-bottom: 1rem;
-	}
-	
-	.page-header p {
-		font-size: 1.125rem;
-		opacity: 0.9;
-		max-width: 600px;
-		margin: 0 auto;
-	}
+  /* HERO */
+  .page-hero {
+    min-height: 40vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    padding-bottom: 3rem;
+    padding-top: 6rem;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s;
+  }
+  .back-link:hover {
+    color: white;
+  }
+  .page-hero h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+  .page-hero p {
+    font-size: 1.25rem;
+    color: rgba(255,255,255,0.8);
+    max-width: 600px;
+  }
 
-	.container {
-		max-width: 1280px;
-		margin: 0 auto;
-		padding: 0 2.5rem;
-	}
+  /* LAYOUT */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+  .content-section {
+    padding-block: 5rem;
+    position: relative;
+  }
+  .content-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
 
-	.content-section {
-		padding-block: 5rem;
-	}
+  /* SECTIONS */
+  .info-section h2 {
+    font-size: 2rem;
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
 
-	.placeholder-content {
-		text-align: center;
-		padding: 4rem;
-		background: var(--surface-color);
-		border-radius: 20px;
-		border: 1px dashed var(--border-color);
-	}
-
-	.placeholder-content p {
-		font-size: 1.25rem;
-		color: var(--text-secondary);
-		margin-bottom: 2rem;
-	}
-
-	.btn-outline {
-		display: inline-block;
-		padding: 0.75rem 1.5rem;
-		border-radius: 999px;
-		font-weight: 600;
-		text-decoration: none;
-		color: var(--color-secondary);
-		border: 2px solid var(--color-secondary);
-		transition: all 0.3s ease;
-	}
-
-	.btn-outline:hover {
-		background: var(--color-secondary);
-		color: white;
-	}
+  /* CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  .info-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    transition: transform 0.3s, background 0.3s;
+    display: flex;
+    flex-direction: column;
+  }
+  .info-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .card-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  .info-card h3 {
+    font-size: 1.3rem;
+    color: white;
+    margin-bottom: 1rem;
+    font-family: 'Outfit', sans-serif;
+  }
+  .info-card p {
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+    font-size: 1rem;
+  }
 </style>
