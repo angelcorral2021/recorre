@@ -6,26 +6,53 @@ import Footer from '../components/layout/Footer.astro';
 
 interface Props {
 	title: string;
+	description?: string;
+	image?: string;
+	ogType?: 'website' | 'article';
+	schema?: Record<string, any>;
 }
 
-const { title } = Astro.props;
+const { 
+	title, 
+	description = "Santiago Chile Travel - Plataforma oficial de turismo", 
+	image = "/default-og-image.jpg",
+	ogType = "website",
+	schema 
+} = Astro.props;
 const lang = getLangFromUrl(Astro.url);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin);
 ---
 
 <!doctype html>
 <html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Santiago Chile Travel - Plataforma oficial de turismo" />
+		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
+		<link rel="canonical" href={canonicalURL} />
+
+		<!-- Open Graph / Redes Sociales -->
+		<meta property="og:type" content={ogType} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={`${title} | Santiago Chile Travel`} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={new URL(image, canonicalURL)} />
+		<meta property="twitter:card" content="summary_large_image" />
+
 		<title>{title} | Santiago Chile Travel</title>
 		
-		<!-- Google Fonts -->
+		<!-- Google Fonts Optimizadas -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+		<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"></noscript>
+
+		<!-- Datos Estructurados JSON-LD -->
+		{schema && (
+			<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+		)}
 	</head>
 	<body class="antialiased min-h-screen flex flex-col bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300">
 		<Navbar />

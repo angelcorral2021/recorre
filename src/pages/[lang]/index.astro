@@ -23,13 +23,21 @@ const subcategories = [
   { id: 'naturaleza-aventura', title: lang === 'es' ? 'Naturaleza y Aventura' : 'Nature & Adventure', icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="8" y="8" width="10" height="32" fill="#E03C31"/><rect x="22" y="16" width="10" height="24" fill="#005B9F"/><rect x="36" y="24" width="10" height="16" fill="#F2B705"/></svg>' },
   { id: 'ocio-vida-nocturna', title: lang === 'es' ? 'Ocio y Vida Nocturna' : 'Leisure & Nightlife', icon: '<svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="#F2B705"/><line x1="8" y1="8" x2="40" y2="40" stroke="#FFFFFF" stroke-width="6"/></svg>' },
 ];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Santiago Chile Travel",
+  "description": description,
+  "url": "https://santiago.travel/"
+};
 ---
 
-<Layout title={`${pageTitle} | RecorreSantiago`} lang={lang as 'es' | 'en'}>
+<Layout title={`${pageTitle} | RecorreSantiago`} description={description} schema={schema}>
   <!-- ═══════════════════════════════════════════
        HEADER CON MESH GRID Y BLOBS
        ═══════════════════════════════════════════ -->
-  <div class="page-header">
+  <header class="page-header">
     <!-- Blobs decorativos -->
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
@@ -44,7 +52,7 @@ const subcategories = [
       </h1>
       <p class="header-description">{description}</p>
     </div>
-  </div>
+  </header>
 
   <!-- ═══════════════════════════════════════════
        CONTENIDO

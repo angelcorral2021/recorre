@@ -12,8 +12,8 @@ const flags = {
 };
 ---
 
-<nav class="sticky top-0 z-50 w-full backdrop-blur-md bg-[var(--background)]/80 border-b border-[var(--foreground)]/5 transition-colors">
-  <div class="container mx-auto px-4 h-[51px] flex items-center justify-between">
+<header class="sticky top-0 z-50 w-full backdrop-blur-md bg-[var(--background)]/80 border-b border-[var(--foreground)]/5 transition-colors">
+  <nav class="container mx-auto px-4 h-[51px] flex items-center justify-between" aria-label="Menú principal">
     <!-- Logo Minimalista -->
     <a href={`/${lang}`} class="font-light text-sm tracking-[0.2em] uppercase text-[var(--foreground)]">
       Santiago<span class="opacity-50">Travel</span>
@@ -34,15 +34,19 @@ const flags = {
             href={`/${l}`} 
             class={`block w-5 h-5 rounded-full overflow-hidden border transition-all ${l === lang ? 'border-[var(--primary)] scale-110 opacity-100' : 'border-transparent opacity-50 hover:opacity-100'}`}
             title={l.toUpperCase()}
+            aria-label={`Seleccionar idioma ${l.toUpperCase()}`}
           >
             <img 
               src={`https://flagcdn.com/w40/${flags[l as keyof typeof flags]}.png`} 
-              alt={l} 
+              alt={l.toUpperCase()} 
+              width="40"
+              height="30"
+              loading="lazy"
               class="w-full h-full object-cover" 
             />
           </a>
         ))}
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</header>
