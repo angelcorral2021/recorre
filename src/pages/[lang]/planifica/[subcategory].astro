@@ -46,7 +46,7 @@ const loc = (obj: any) => obj?.[lang as keyof typeof obj] || obj?.en || '';
           <div class="cards-grid">
             {section.items.map(item => (
               <div class="info-card">
-                <div class="card-icon">{item.icon}</div>
+                <div class="card-icon" set:html={item.icon} />
                 <h3>{loc(item.title)}</h3>
                 <p>{loc(item.desc)}</p>
               </div>

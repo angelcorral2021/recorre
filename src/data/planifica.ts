@@ -30,7 +30,7 @@ export const planificaData: PlanificaCategory[] = [
         title: { es: 'Llegando a Santiago', en: 'Arriving in Santiago', pt: 'Chegando em Santiago' },
         items: [
           {
-            icon: '✈️',
+            icon: '<svg width="48" height="48" viewBox="0 0 48 48"><polygon points="8,8 40,24 8,40" fill="#E03C31"/><rect x="8" y="20" width="16" height="8" fill="#005B9F"/></svg>',
             title: { es: 'Aeropuerto SCL', en: 'SCL Airport', pt: 'Aeroporto SCL' },
             desc: { 
               es: 'El Aeropuerto Internacional Arturo Merino Benítez es el principal punto de entrada. Se ubica a 30 minutos del centro de la ciudad.', 
@@ -39,7 +39,7 @@ export const planificaData: PlanificaCategory[] = [
             }
           },
           {
-            icon: '🚌',
+            icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="8" y="16" width="32" height="16" fill="#F2B705"/><circle cx="16" cy="36" r="6" fill="#E03C31"/><circle cx="32" cy="36" r="6" fill="#E03C31"/></svg>',
             title: { es: 'Buses desde el Aeropuerto', en: 'Airport Buses', pt: 'Ônibus do Aeroporto' },
             desc: { 
               es: 'Empresas como Centropuerto y TurBus ofrecen traslados económicos cada 10-15 minutos hacia estaciones de metro centrales.', 
@@ -53,7 +53,7 @@ export const planificaData: PlanificaCategory[] = [
         title: { es: 'Moverse por la ciudad', en: 'Getting around the city', pt: 'Movendo-se pela cidade' },
         items: [
           {
-            icon: '🚇',
+            icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="12" y="8" width="24" height="32" fill="#005B9F"/><polygon points="24,8 36,24 12,24" fill="#F2B705"/></svg>',
             title: { es: 'Metro de Santiago', en: 'Santiago Subway', pt: 'Metrô de Santiago' },
             desc: { 
               es: 'Es el sistema de transporte más rápido y extenso de Sudamérica. Necesitarás una Tarjeta Bip! para viajar.', 
@@ -62,7 +62,7 @@ export const planificaData: PlanificaCategory[] = [
             }
           },
           {
-            icon: '🚖',
+            icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="8" y="20" width="32" height="12" fill="#F2B705"/><rect x="16" y="12" width="16" height="8" fill="#E03C31"/><circle cx="16" cy="36" r="4" fill="#005B9F"/><circle cx="32" cy="36" r="4" fill="#005B9F"/></svg>',
             title: { es: 'Taxis y Aplicaciones', en: 'Taxis and Apps', pt: 'Táxis e Aplicativos' },
             desc: { 
               es: 'Uber, Cabify y Didi funcionan excelentemente. Para los taxis tradicionales, usa siempre los que tienen techo amarillo y exige el taxímetro.', 
@@ -82,7 +82,7 @@ export const planificaData: PlanificaCategory[] = [
         title: { es: 'Mejores Barrios', en: 'Best Neighborhoods', pt: 'Melhores Bairros' },
         items: [
           {
-            icon: '🍷',
+            icon: '<svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="#E03C31"/><polygon points="24,8 40,40 8,40" fill="rgba(0,91,159,0.7)"/></svg>',
             title: { es: 'Barrio Lastarria', en: 'Lastarria Neighborhood', pt: 'Bairro Lastarria' },
             desc: { 
               es: 'Ideal para amantes del arte, gastronomía y cultura. Lleno de cafés, cines independientes y museos a pasos de distancia.', 
@@ -91,7 +91,7 @@ export const planificaData: PlanificaCategory[] = [
             }
           },
           {
-            icon: '🌳',
+            icon: '<svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="16" r="12" fill="#005B9F"/><rect x="20" y="28" width="8" height="16" fill="#F2B705"/><circle cx="14" cy="24" r="8" fill="#E03C31"/></svg>',
             title: { es: 'Providencia', en: 'Providencia', pt: 'Providência' },
             desc: { 
               es: 'Seguro, verde y céntrico. Ofrece una mezcla perfecta entre vida residencial tranquila y excelente conectividad comercial.', 
@@ -100,7 +100,7 @@ export const planificaData: PlanificaCategory[] = [
             }
           },
           {
-            icon: '🏢',
+            icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="8" y="16" width="12" height="24" fill="#E03C31"/><rect x="24" y="8" width="16" height="32" fill="#005B9F"/><rect x="28" y="12" width="8" height="8" fill="#F2B705"/></svg>',
             title: { es: 'Las Condes (El Golf)', en: 'Las Condes (El Golf)', pt: 'Las Condes (El Golf)' },
             desc: { 
               es: 'El distrito financiero moderno. Destaca por hoteles de lujo, rascacielos y restaurantes de alta cocina internacional.', 
@@ -158,7 +158,7 @@ export const planificaData: PlanificaCategory[] = [
         title: { es: 'Información Esencial', en: 'Essential Information', pt: 'Informações Essenciais' },
         items: [
           {
-            icon: '💵',
+            icon: '<svg width="48" height="48" viewBox="0 0 48 48"><rect x="8" y="12" width="32" height="24" fill="#005B9F"/><circle cx="24" cy="24" r="8" fill="#F2B705"/><rect x="12" y="16" width="6" height="4" fill="#E03C31"/></svg>',
             title: { es: 'Moneda local', en: 'Local currency', pt: 'Moeda local' },
             desc: { 
               es: 'El Peso Chileno (CLP). Las tarjetas de crédito y débito son ampliamente aceptadas, incluso para compras menores.', 
@@ -167,7 +167,7 @@ export const planificaData: PlanificaCategory[] = [
             }
           },
           {
-            icon: '☀️',
+            icon: '<svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="12" fill="#F2B705"/><polygon points="24,4 28,10 20,10" fill="#E03C31"/><polygon points="24,44 28,38 20,38" fill="#E03C31"/><polygon points="4,24 10,20 10,28" fill="#005B9F"/><polygon points="44,24 38,20 38,28" fill="#005B9F"/></svg>',
             title: { es: 'Clima y Cuándo ir', en: 'Weather and When to go', pt: 'Clima e Quando ir' },
             desc: { 
               es: 'Santiago tiene veranos muy calurosos (Ene-Feb) e inviernos fríos (Jun-Ago). Primavera y Otoño son ideales para caminar.', 
@@ -176,7 +176,7 @@ export const planificaData: PlanificaCategory[] = [
             }
           },
           {
-            icon: '🔌',
+            icon: '<svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="#005B9F"/><circle cx="18" cy="24" r="4" fill="#F2B705"/><circle cx="30" cy="24" r="4" fill="#F2B705"/><rect x="22" y="8" width="4" height="8" fill="#E03C31"/></svg>',
             title: { es: 'Enchufes y Voltaje', en: 'Plugs and Voltage', pt: 'Tomadas e Voltagem' },
             desc: { 
               es: 'El voltaje es de 220V. Se utilizan enchufes tipo C o L (dos o tres clavijas redondas). ¡Trae un adaptador universal!', 
