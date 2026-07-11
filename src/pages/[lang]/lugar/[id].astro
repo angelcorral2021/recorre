@@ -37,14 +37,14 @@ const placeHours = loc(place.hours);
 const placePrice = loc(place.price);
 
 const carouselImages = [
-  "https://picsum.photos/seed/stgo1/800/600",
-  "https://picsum.photos/seed/stgo2/800/600",
-  "https://picsum.photos/seed/stgo3/800/600",
-  "https://picsum.photos/seed/stgo4/800/600",
-  "https://picsum.photos/seed/stgo5/800/600",
-  "https://picsum.photos/seed/stgo6/800/600",
-  "https://picsum.photos/seed/stgo7/800/600",
-  "https://picsum.photos/seed/stgo8/800/600"
+  { url: "https://picsum.photos/seed/stgo1/800/600", desc: { es: "Vista panorámica al atardecer", en: "Panoramic sunset view", pt: "Vista panorâmica ao pôr do sol" }, photographer: "Juan Pérez" },
+  { url: "https://picsum.photos/seed/stgo2/800/600", desc: { es: "Detalles arquitectónicos", en: "Architectural details", pt: "Detalhes arquitetônicos" }, photographer: "María González" },
+  { url: "https://picsum.photos/seed/stgo3/800/600", desc: { es: "Ambiente vibrante de la ciudad", en: "Vibrant city atmosphere", pt: "Atmosfera vibrante da cidade" }, photographer: "Carlos Silva" },
+  { url: "https://picsum.photos/seed/stgo4/800/600", desc: { es: "Naturaleza y entorno urbano", en: "Nature and urban environment", pt: "Natureza e ambiente urbano" }, photographer: "Ana Rojas" },
+  { url: "https://picsum.photos/seed/stgo5/800/600", desc: { es: "Luces de la ciudad por la noche", en: "City lights at night", pt: "Luzes da cidade à noite" }, photographer: "Pedro Soto" },
+  { url: "https://picsum.photos/seed/stgo6/800/600", desc: { es: "Arte callejero y expresiones", en: "Street art and expressions", pt: "Arte de rua e expressões" }, photographer: "Laura Díaz" },
+  { url: "https://picsum.photos/seed/stgo7/800/600", desc: { es: "Cultura y tradiciones locales", en: "Local culture and traditions", pt: "Cultura e tradições locais" }, photographer: "Diego Flores" },
+  { url: "https://picsum.photos/seed/stgo8/800/600", desc: { es: "Vida cotidiana en Santiago", en: "Everyday life in Santiago", pt: "Vida cotidiana em Santiago" }, photographer: "Sofía Vergara" }
 ];
 
 // Text to go back
@@ -142,9 +142,15 @@ const t_map = { es: 'Ver en mapa', en: 'View on map', pt: 'Ver no mapa' }[lang a
       </div>
       <div class="carousel-container">
         <div class="carousel-track">
-          {carouselImages.map((imgUrl, i) => (
+          {carouselImages.map((item, i) => (
             <div class="carousel-slide">
-              <img src={imgUrl} alt={`Gallery image ${i + 1}`} loading="lazy" />
+              <img 
+                src={item.url} 
+                alt={`Gallery image ${i + 1}`} 
+                loading="lazy" 
+                data-desc={loc(item.desc)} 
+                data-photographer={item.photographer} 
+              />
             </div>
           ))}
         </div>
@@ -156,7 +162,19 @@ const t_map = { es: 'Ver en mapa', en: 'View on map', pt: 'Ver no mapa' }[lang a
   <!-- LIGHTBOX -->
   <div id="lightbox" class="lightbox">
     <button class="lightbox-close" aria-label="Close">&times;</button>
-    <img class="lightbox-img" src="" alt="Enlarged view" />
+    <button class="lightbox-btn lightbox-prev" aria-label="Previous image">
+      <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="lightbox-btn lightbox-next" aria-label="Next image">
+      <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <div class="lightbox-content">
+      <img class="lightbox-img" src="" alt="Enlarged view" />
+      <div class="lightbox-caption">
+        <p class="lightbox-desc"></p>
+        <p class="lightbox-photographer"></p>
+      </div>
+    </div>
   </div>
 
 </Layout>
@@ -375,8 +393,8 @@ const t_map = { es: 'Ver en mapa', en: 'View on map', pt: 'Ver no mapa' }[lang a
     .carousel-slide { flex: 0 0 calc(50% - 1rem); }
   }
   @media (min-width: 900px) {
-    /* 6 imágenes simultáneas */
-    .carousel-slide { flex: 0 0 calc(16.666% - 1.25rem); height: 180px; }
+    /* 4 imágenes simultáneas */
+    .carousel-slide { flex: 0 0 calc(25% - 1.125rem); height: 220px; }
   }
   .carousel-slide img {
     width: 100%;
@@ -406,9 +424,14 @@ const t_map = { es: 'Ver en mapa', en: 'View on map', pt: 'Ver no mapa' }[lang a
     opacity: 1;
     pointer-events: auto;
   }
+  .lightbox-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .lightbox-img {
     max-width: 90vw;
-    max-height: 90vh;
+    max-height: 80vh;
     border-radius: 8px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     transform: scale(0.95);
@@ -416,6 +439,27 @@ const t_map = { es: 'Ver en mapa', en: 'View on map', pt: 'Ver no mapa' }[lang a
   }
   .lightbox.active .lightbox-img {
     transform: scale(1);
+  }
+  .lightbox-caption {
+    margin-top: 1rem;
+    text-align: center;
+    color: white;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+  }
+  .lightbox.active .lightbox-caption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .lightbox-desc {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+  }
+  .lightbox-photographer {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.7);
   }
   .lightbox-close {
     position: absolute;
@@ -431,6 +475,33 @@ const t_map = { es: 'Ver en mapa', en: 'View on map', pt: 'Ver no mapa' }[lang a
   }
   .lightbox-close:hover {
     color: #f43f5e;
+  }
+  .lightbox-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.4);
+    border: none;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10000;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .lightbox-btn:hover {
+    background: var(--primary-color, #e11d48);
+    transform: translateY(-50%) scale(1.1);
+  }
+  .lightbox-prev {
+    left: 2rem;
+  }
+  .lightbox-next {
+    right: 2rem;
   }
 </style>
 
@@ -457,15 +528,47 @@ const t_map = { es: 'Ver en mapa', en: 'View on map', pt: 'Ver no mapa' }[lang a
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = lightbox?.querySelector('.lightbox-img') as HTMLImageElement;
     const closeBtn = lightbox?.querySelector('.lightbox-close');
+    const prevBtnLb = lightbox?.querySelector('.lightbox-prev');
+    const nextBtnLb = lightbox?.querySelector('.lightbox-next');
     const images = document.querySelectorAll('.carousel-slide img');
 
-    if (lightbox && lightboxImg && closeBtn) {
-      images.forEach(img => {
+    if (lightbox && lightboxImg && closeBtn && images.length > 0) {
+      let currentIndex = 0;
+
+      const updateLightbox = (index: number) => {
+        const img = images[index] as HTMLImageElement;
+        lightboxImg.src = img.src;
+        const descEl = lightbox.querySelector('.lightbox-desc');
+        const photoEl = lightbox.querySelector('.lightbox-photographer');
+        if (descEl) descEl.textContent = img.getAttribute('data-desc') || '';
+        if (photoEl) {
+          const photog = img.getAttribute('data-photographer');
+          photoEl.textContent = photog ? `📸 ${photog}` : '';
+        }
+      };
+
+      images.forEach((img, index) => {
         img.addEventListener('click', () => {
-          lightboxImg.src = (img as HTMLImageElement).src;
+          currentIndex = index;
+          updateLightbox(currentIndex);
           lightbox.classList.add('active');
         });
       });
+
+      const showPrev = (e: Event) => {
+        e.stopPropagation();
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+        updateLightbox(currentIndex);
+      };
+
+      const showNext = (e: Event) => {
+        e.stopPropagation();
+        currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+        updateLightbox(currentIndex);
+      };
+
+      prevBtnLb?.addEventListener('click', showPrev);
+      nextBtnLb?.addEventListener('click', showNext);
 
       const closeLightbox = () => {
         lightbox.classList.remove('active');
@@ -474,12 +577,15 @@ const t_map = { es: 'Ver en mapa', en: 'View on map', pt: 'Ver no mapa' }[lang a
 
       closeBtn.addEventListener('click', closeLightbox);
       lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) closeLightbox();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        if (e.target === lightbox || (e.target as Element).classList.contains('lightbox-content')) {
           closeLightbox();
         }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') showPrev(e);
+        if (e.key === 'ArrowRight') showNext(e);
       });
     }
   };
